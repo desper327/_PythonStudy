@@ -1,0 +1,1177 @@
+{
+  "panels": [
+    {
+      "id": "uv",
+      "name": "UV包管理器",
+      "commands": [
+        {
+          "name": "UV版本",
+          "command": "uv --version",
+          "description": "显示UV包管理器的版本信息 - UV是一个快速的Python包管理器",
+          "color": "#2196F3"
+        },
+        {
+          "name": "创建虚拟环境",
+          "command": "uv venv create",
+          "description": "创建一个新的Python虚拟环境 - 用于项目隔离",
+          "color": "#4CAF50"
+        },
+        {
+          "name": "激活虚拟环境",
+          "command": "uv venv activate",
+          "description": "显示如何激活当前虚拟环境的命令 - 准备使用环境",
+          "color": "#FFC107"
+        },
+        {
+          "name": "安装包",
+          "command": "uv pip install <package>",
+          "description": "安装Python包 - 支持从PyPI、Git等源安装",
+          "color": "#FF9800"
+        },
+        {
+          "name": "安装特定版本",
+          "command": "uv pip install <package>==<version>",
+          "description": "安装指定版本的Python包 - 确保版本一致性",
+          "color": "#E91E63"
+        },
+        {
+          "name": "开发模式安装",
+          "command": "uv pip install -e .",
+          "description": "以可编辑模式安装当前项目 - 适用于开发中的包",
+          "color": "#673AB7"
+        },
+        {
+          "name": "列出已安装包",
+          "command": "uv pip list",
+          "description": "列出当前环境中已安装的所有Python包及其版本",
+          "color": "#9C27B0"
+        },
+        {
+          "name": "导出依赖",
+          "command": "uv pip freeze",
+          "description": "以requirements.txt格式输出已安装的包 - 用于环境复制",
+          "color": "#3F51B5"
+        },
+        {
+          "name": "导出锁定文件",
+          "command": "uv pip compile requirements.in -o requirements.txt",
+          "description": "从requirements.in生成锁定的依赖文件 - 确保依赖一致性",
+          "color": "#03A9F4"
+        },
+        {
+          "name": "卸载包",
+          "command": "uv pip uninstall <package>",
+          "description": "卸载指定的Python包 - 支持批量卸载",
+          "color": "#F44336"
+        },
+        {
+          "name": "包信息",
+          "command": "uv pip show <package>",
+          "description": "显示指定包的详细信息 - 包括版本、依赖等",
+          "color": "#00BCD4"
+        },
+        {
+          "name": "安装依赖文件",
+          "command": "uv pip install -r requirements.txt",
+          "description": "从requirements.txt文件安装依赖",
+          "color": "#8BC34A"
+        },
+        {
+          "name": "UV同步",
+          "command": "uv pip sync requirements.txt",
+          "description": "同步环境与requirements.txt完全一致 - 安装、更新和删除包",
+          "color": "#009688"
+        },
+        {
+          "name": "UV缓存清理",
+          "command": "uv cache clean",
+          "description": "清理UV缓存 - 释放磁盘空间",
+          "color": "#607D8B"
+        },
+        {
+          "name": "UV缓存目录",
+          "command": "uv cache dir",
+          "description": "显示UV缓存目录位置 - 查看缓存存储位置",
+          "color": "#795548"
+        },
+        {
+          "name": "UV缓存信息",
+          "command": "uv cache info",
+          "description": "显示UV缓存使用情况 - 查看缓存统计信息",
+          "color": "#9E9E9E"
+        },
+        {
+          "name": "UV检查更新",
+          "command": "uv pip check",
+          "description": "检查环境中的包依赖冲突 - 验证环境健康状态",
+          "color": "#CDDC39"
+        },
+        {
+          "name": "UV搜索包",
+          "command": "uv pip search <package>",
+          "description": "在PyPI上搜索Python包 - 查找可用的包",
+          "color": "#FF5722"
+        },
+        {
+          "name": "UV下载包",
+          "command": "uv pip download <package> -d ./downloads",
+          "description": "下载包但不安装 - 适用于离线环境准备",
+          "color": "#3F51B5"
+        }
+      ]
+    },
+    {
+      "id": "pyenv",
+      "name": "pyenv命令",
+      "commands": [
+        {
+          "name": "安装Python版本",
+          "command": "pyenv install <version>",
+          "description": "安装指定python",
+          "color": "#2196F3"
+        },
+        {
+          "name": "卸载Python版本",
+          "command": "pyenv uninstall <version>",
+          "description": "卸载指定Python版本",
+          "color": "#4CAF50"
+        },
+        {
+          "name": "列出已安装Python版本",
+          "command": "pyenv version",
+          "description": "列出当前使用的Python版本和路径",
+          "color": "#FFC107"
+        },
+        {
+          "name": "列出所有已安装Python版本",
+          "command": "pyenv versions",
+          "description": "列出所有已安装的Python版本和路径",
+          "color": "#4CAF50"
+        },
+        {
+          "name": "切换全局Python版本",
+          "command": "pyenv global <version>",
+          "description": "设置全局Python版本",
+          "color": "#FF9800"
+        },
+        {
+          "name": "删除Python版本",
+          "command": "pyenv uninstall <version>",
+          "description": "卸载指定Python版本",
+          "color": "#9C27B0"
+        },
+        {
+          "name": "列出全局Python版本",
+          "command": "pyenv global",
+          "description": "显示当前全局Python版本",
+          "color": "#607D8B"
+        },
+        {
+          "name": "列出当前Python版本",
+          "command": "pyenv version",
+          "description": "显示当前Python版本",
+          "color": "#795548"
+        },
+        {
+          "name": "列出可安装Python版本",
+          "command": "pyenv install --list",
+          "description": "列出可安装的Python版本",
+          "color": "#9E9E9E"
+        },
+        {
+          "name": "Pyenv配置",
+          "command": "pyenv config",
+          "description": "显示当前pyenv配置信息",
+          "color": "#673AB7"
+        },
+        {
+          "name": "Pyenv全局配置",
+          "command": "pyenv global --list",
+          "description": "显示全局pyenv配置信息",
+          "color": "#E91E63"
+        }
+      ]
+    },
+    {
+      "id": "python",
+      "name": "Python命令",
+      "commands": [
+        {
+          "name": "Python版本",
+          "command": "python --version",
+          "description": "显示Python解释器的版本信息",
+          "color": "#2196F3"
+        },
+        {
+          "name": "交互式Python",
+          "command": "python",
+          "description": "启动交互式Python解释器 - 用于快速测试代码",
+          "color": "#4CAF50"
+        },
+        {
+          "name": "运行脚本",
+          "command": "python <script.py>",
+          "description": "运行Python脚本文件",
+          "color": "#FF9800"
+        },
+        {
+          "name": "模块帮助",
+          "command": "python -c \"import <module>; help(<module>)\"",
+          "description": "显示Python模块的帮助信息",
+          "color": "#9C27B0"
+        },
+        {
+          "name": "代码性能分析",
+          "command": "python -m cProfile -s cumtime <script.py>",
+          "description": "对Python脚本进行性能分析 - 按累计时间排序",
+          "color": "#3F51B5"
+        },
+        {
+          "name": "HTTP服务器",
+          "command": "python -m http.server 8000",
+          "description": "启动简单的HTTP服务器 - 在当前目录提供文件服务",
+          "color": "#00BCD4"
+        },
+        {
+          "name": "虚拟环境",
+          "command": "python -m venv <env_name>",
+          "description": "创建Python虚拟环境 - 用于项目隔离",
+          "color": "#8BC34A"
+        },
+        {
+          "name": "pip安装",
+          "command": "python -m pip install <package>",
+          "description": "使用pip安装Python包",
+          "color": "#FF5722"
+        },
+        {
+          "name": "pip更新",
+          "command": "python -m pip install --upgrade pip",
+          "description": "更新pip到最新版本",
+          "color": "#607D8B"
+        },
+        {
+          "name": "代码格式化",
+          "command": "python -m black <file_or_directory>",
+          "description": "使用Black格式化Python代码 - 自动统一代码风格",
+          "color": "#795548"
+        },
+        {
+          "name": "代码检查",
+          "command": "python -m pylint <file_or_directory>",
+          "description": "使用Pylint检查Python代码质量 - 发现潜在问题",
+          "color": "#9E9E9E"
+        },
+        {
+          "name": "单元测试",
+          "command": "python -m unittest discover -s <test_directory>",
+          "description": "运行Python单元测试 - 自动发现并执行测试用例",
+          "color": "#673AB7"
+        },
+        {
+          "name": "Pytest测试",
+          "command": "python -m pytest <test_file_or_dir>",
+          "description": "使用Pytest框架运行测试 - 更强大的测试功能",
+          "color": "#E91E63"
+        },
+        {
+          "name": "依赖图",
+          "command": "python -m pipdeptree",
+          "description": "显示Python包依赖关系树 - 分析包依赖",
+          "color": "#009688"
+        },
+        {
+          "name": "类型检查",
+          "command": "python -m mypy <file_or_directory>",
+          "description": "使用MyPy进行静态类型检查 - 提前发现类型错误",
+          "color": "#FFC107"
+        },
+        {
+          "name": "代码覆盖率",
+          "command": "python -m coverage run -m pytest && python -m coverage report",
+          "description": "测量代码测试覆盖率 - 分析测试完整性",
+          "color": "#CDDC39"
+        },
+        {
+          "name": "打包项目",
+          "command": "python -m build",
+          "description": "构建Python项目分发包 - 创建wheel和源码包",
+          "color": "#03A9F4"
+        }
+      ]
+    },
+    {
+      "id": "network",
+      "name": "网络命令",
+      "commands": [
+        {
+          "name": "IP配置",
+          "command": "ipconfig",
+          "description": "显示所有网络适配器的IP配置信息 - 包括IP地址、子网掩码、网关等",
+          "color": "#2196F3"
+        },
+        {
+          "name": "详细IP配置",
+          "command": "ipconfig /all",
+          "description": "显示完整的网络配置信息 - 包括DNS、DHCP、MAC地址等",
+          "color": "#3F51B5"
+        },
+        {
+          "name": "Ping测试",
+          "command": "ping <host>",
+          "description": "测试与指定主机的网络连接 - 显示响应时间和丢包率",
+          "color": "#4CAF50"
+        },
+        {
+          "name": "连续Ping测试",
+          "command": "ping -t <host>",
+          "description": "持续测试与指定主机的连接 - 监控网络稳定性",
+          "color": "#8BC34A"
+        },
+        {
+          "name": "路由跟踪",
+          "command": "tracert <host>",
+          "description": "显示数据包到达目标主机经过的路由器 - 用于网络故障排查",
+          "color": "#FF9800"
+        },
+        {
+          "name": "网络连接",
+          "command": "netstat -ano",
+          "description": "显示所有活动的网络连接和监听端口 - 包括进程ID",
+          "color": "#9C27B0"
+        },
+        {
+          "name": "TCP连接",
+          "command": "netstat -anop tcp",
+          "description": "仅显示TCP连接 - 查看TCP连接状态",
+          "color": "#673AB7"
+        },
+        {
+          "name": "路由表",
+          "command": "netstat -r",
+          "description": "显示路由表信息 - 查看网络路由配置",
+          "color": "#00BCD4"
+        },
+        {
+          "name": "DNS查询",
+          "command": "nslookup <domain>",
+          "description": "查询DNS记录 - 可获取域名的IP地址等信息",
+          "color": "#8BC34A"
+        },
+        {
+          "name": "DNS详细查询",
+          "command": "nslookup -type=any <domain>",
+          "description": "查询域名的所有DNS记录 - 包括MX、TXT、NS等",
+          "color": "#009688"
+        },
+        {
+          "name": "ARP缓存",
+          "command": "arp -a",
+          "description": "显示ARP缓存表 - 查看IP地址与MAC地址的映射",
+          "color": "#FF5722"
+        },
+        {
+          "name": "无线网络",
+          "command": "netsh wlan show networks",
+          "description": "显示周围可用的无线网络 - 包括信号强度和安全类型",
+          "color": "#607D8B"
+        },
+        {
+          "name": "无线网络配置",
+          "command": "netsh wlan show profiles",
+          "description": "显示已保存的无线网络配置 - 查看已连接过的网络",
+          "color": "#795548"
+        },
+        {
+          "name": "网络接口",
+          "command": "netsh interface show interface",
+          "description": "显示所有网络接口的状态",
+          "color": "#795548"
+        },
+        {
+          "name": "清除DNS缓存",
+          "command": "ipconfig /flushdns",
+          "description": "清除DNS解析缓存 - 用于解决DNS问题",
+          "color": "#F44336"
+        },
+        {
+          "name": "HTTP请求",
+          "command": "curl -I <url>",
+          "description": "发送HTTP HEAD请求并显示响应头 - 检查网站状态",
+          "color": "#E91E63"
+        },
+        {
+          "name": "下载文件",
+          "command": "curl -O <url>",
+          "description": "从指定URL下载文件 - 保存到当前目录",
+          "color": "#9E9E9E"
+        },
+        {
+          "name": "端口扫描",
+          "command": "powershell -Command \"1..1024 | ForEach-Object {$s=New-Object Net.Sockets.TcpClient; try{$s.Connect('<host>',$_); if($s.Connected){$_}}catch{} finally{$s.Dispose()}}\"",
+          "description": "扫描主机的常用端口 - 查找开放的服务",
+          "color": "#CDDC39"
+        },
+        {
+          "name": "网络统计",
+          "command": "netstat -e",
+          "description": "显示网络接口统计信息 - 查看发送和接收的数据量",
+          "color": "#03A9F4"
+        },
+        {
+          "name": "网络测速",
+          "command": "speedtest",
+          "description": "测试网络上传和下载速度 - 需要安装speedtest-cli",
+          "color": "#FFC107"
+        }
+      ]
+    },
+    {
+      "id": "os",
+      "name": "系统命令",
+      "commands": [
+        {
+          "name": "文件列表",
+          "command": "dir",
+          "description": "列出当前目录的文件和文件夹 - 显示名称、大小、修改时间等",
+          "color": "#2196F3"
+        },
+        {
+          "name": "递归文件列表",
+          "command": "dir /s",
+          "description": "递归列出所有子目录的内容 - 用于文件查找",
+          "color": "#3F51B5"
+        },
+        {
+          "name": "隐藏文件列表",
+          "command": "dir /a",
+          "description": "列出所有文件（包括隐藏文件）- 查看系统隐藏文件",
+          "color": "#673AB7"
+        },
+        {
+          "name": "系统信息",
+          "command": "systeminfo",
+          "description": "显示详细的系统信息 - 包括硬件配置、系统版本等",
+          "color": "#4CAF50"
+        },
+        {
+          "name": "进程列表",
+          "command": "tasklist",
+          "description": "显示当前运行的所有进程 - 包括进程ID和内存使用",
+          "color": "#FF9800"
+        },
+        {
+          "name": "详细进程信息",
+          "command": "tasklist /v",
+          "description": "显示详细的进程信息 - 包括进程标题、用户名等",
+          "color": "#9C27B0"
+        },
+        {
+          "name": "结束进程",
+          "command": "taskkill /pid <pid> /f",
+          "description": "强制结束指定进程ID的进程 - 终止无响应程序",
+          "color": "#E91E63"
+        },
+        {
+          "name": "系统文件检查",
+          "command": "sfc /scannow",
+          "description": "扫描并修复Windows系统文件 - 修复系统完整性",
+          "color": "#00BCD4"
+        },
+        {
+          "name": "磁盘检查",
+          "command": "chkdsk /f",
+          "description": "检查并修复磁盘错误 - 修复文件系统问题",
+          "color": "#8BC34A"
+        },
+        {
+          "name": "磁盘空间",
+          "command": "powershell -Command \"Get-PSDrive -PSProvider 'FileSystem'\"",
+          "description": "显示所有驱动器的空间使用情况 - 查看磁盘剩余空间",
+          "color": "#009688"
+        },
+        {
+          "name": "系统映像修复",
+          "command": "dism /online /cleanup-image /restorehealth",
+          "description": "修复Windows系统映像 - 深度系统修复",
+          "color": "#FF5722"
+        },
+        {
+          "name": "能源报告",
+          "command": "powercfg /energy",
+          "description": "生成系统能源使用报告 - 分析电源效率",
+          "color": "#607D8B"
+        },
+        {
+          "name": "目录树",
+          "command": "tree",
+          "description": "以树形结构显示目录内容 - 直观显示文件层次",
+          "color": "#795548"
+        },
+        {
+          "name": "查找文件",
+          "command": "where /r . <filename>",
+          "description": "在当前目录及子目录中查找文件 - 快速定位文件",
+          "color": "#9E9E9E"
+        },
+        {
+          "name": "文件内容搜索",
+          "command": "findstr /s /i \"<text>\" *.*",
+          "description": "在所有文件中搜索指定文本 - 查找包含特定内容的文件",
+          "color": "#CDDC39"
+        },
+        {
+          "name": "系统启动项",
+          "command": "wmic startup list full",
+          "description": "列出所有系统启动项 - 查看开机自启动程序",
+          "color": "#FFC107"
+        },
+        {
+          "name": "硬件信息",
+          "command": "wmic computersystem get model,name,manufacturer",
+          "description": "显示计算机硬件信息 - 查看制造商和型号",
+          "color": "#03A9F4"
+        },
+        {
+          "name": "CPU信息",
+          "command": "wmic cpu get name,numberofcores,maxclockspeed",
+          "description": "显示CPU详细信息 - 查看处理器型号、核心数和频率",
+          "color": "#3F51B5"
+        },
+        {
+          "name": "内存信息",
+          "command": "wmic memorychip get capacity,speed,manufacturer",
+          "description": "显示内存详细信息 - 查看内存容量、速度和制造商",
+          "color": "#673AB7"
+        }
+      ]
+    },
+    {
+      "id": "dev_tools",
+      "name": "开发工具",
+      "commands": [
+        {
+          "name": "Git状态",
+          "command": "git status",
+          "description": "显示当前Git仓库的状态 - 查看修改、暂存和未跟踪文件",
+          "color": "#2196F3"
+        },
+        {
+          "name": "Git提交",
+          "command": "git commit -m \"<message>\"",
+          "description": "提交暂存的更改 - 记录项目历史",
+          "color": "#3F51B5"
+        },
+        {
+          "name": "Git拉取",
+          "command": "git pull",
+          "description": "从远程仓库拉取更改并合并 - 更新本地代码",
+          "color": "#4CAF50"
+        },
+        {
+          "name": "Git推送",
+          "command": "git push",
+          "description": "将本地提交推送到远程仓库 - 分享代码更改",
+          "color": "#FF9800"
+        },
+        {
+          "name": "Git分支",
+          "command": "git branch",
+          "description": "列出本地分支 - 查看当前所在分支",
+          "color": "#9C27B0"
+        },
+        {
+          "name": "Git新分支",
+          "command": "git checkout -b <branch_name>",
+          "description": "创建并切换到新分支 - 开始新功能开发",
+          "color": "#00BCD4"
+        },
+        {
+          "name": "Git日志",
+          "command": "git log --oneline -n 10",
+          "description": "显示最近10条提交历史 - 查看项目变更",
+          "color": "#8BC34A"
+        },
+        {
+          "name": "Docker列表",
+          "command": "docker ps",
+          "description": "列出运行中的Docker容器 - 查看容器状态",
+          "color": "#FF5722"
+        },
+        {
+          "name": "Docker镜像",
+          "command": "docker images",
+          "description": "列出本地Docker镜像 - 查看可用镜像",
+          "color": "#607D8B"
+        },
+        {
+          "name": "Docker构建",
+          "command": "docker build -t <image_name> .",
+          "description": "构建Docker镜像 - 从Dockerfile创建镜像",
+          "color": "#795548"
+        },
+        {
+          "name": "Docker运行",
+          "command": "docker run -p <host_port>:<container_port> <image_name>",
+          "description": "运行Docker容器 - 启动应用程序",
+          "color": "#9E9E9E"
+        },
+        {
+          "name": "NPM安装",
+          "command": "npm install",
+          "description": "安装Node.js项目依赖 - 从package.json安装",
+          "color": "#673AB7"
+        },
+        {
+          "name": "NPM启动",
+          "command": "npm start",
+          "description": "启动Node.js应用程序 - 运行npm脚本",
+          "color": "#E91E63"
+        },
+        {
+          "name": "NPM构建",
+          "command": "npm run build",
+          "description": "构建Node.js项目 - 生成生产环境代码",
+          "color": "#009688"
+        },
+        {
+          "name": "NPM测试",
+          "command": "npm test",
+          "description": "运行Node.js项目测试 - 执行测试套件",
+          "color": "#FFC107"
+        },
+        {
+          "name": "数据库备份",
+          "command": "mysqldump -u <username> -p <database> > backup.sql",
+          "description": "备份MySQL数据库 - 创建SQL转储文件",
+          "color": "#CDDC39"
+        },
+        {
+          "name": "数据库恢复",
+          "command": "mysql -u <username> -p <database> < backup.sql",
+          "description": "恢复MySQL数据库 - 从SQL文件恢复",
+          "color": "#03A9F4"
+        }
+      ]
+    },
+    {
+      "id": "system",
+      "name": "系统工具",
+      "commands": [
+        {
+          "name": "环境变量",
+          "command": "echo %PATH%",
+          "description": "显示系统PATH环境变量 - 查看可执行文件搜索路径",
+          "color": "#2196F3"
+        },
+        {
+          "name": "所有环境变量",
+          "command": "set",
+          "description": "显示所有环境变量 - 查看系统配置信息",
+          "color": "#3F51B5"
+        },
+        {
+          "name": "任务管理器",
+          "command": "taskmgr",
+          "description": "打开任务管理器 - 管理进程、性能监控等",
+          "color": "#4CAF50"
+        },
+        {
+          "name": "系统信息",
+          "command": "msinfo32",
+          "description": "打开系统信息工具 - 查看详细的系统配置",
+          "color": "#FF9800"
+        },
+        {
+          "name": "DirectX诊断",
+          "command": "dxdiag",
+          "description": "打开DirectX诊断工具 - 检查显卡和多媒体",
+          "color": "#9C27B0"
+        },
+        {
+          "name": "控制面板",
+          "command": "control",
+          "description": "打开控制面板 - 系统设置管理",
+          "color": "#00BCD4"
+        },
+        {
+          "name": "管理控制台",
+          "command": "mmc",
+          "description": "打开Microsoft管理控制台 - 系统管理工具集",
+          "color": "#8BC34A"
+        },
+        {
+          "name": "事件查看器",
+          "command": "eventvwr",
+          "description": "打开事件查看器 - 查看系统日志",
+          "color": "#FF5722"
+        },
+        {
+          "name": "组策略编辑器",
+          "command": "gpedit.msc",
+          "description": "打开组策略编辑器 - 管理系统策略",
+          "color": "#607D8B"
+        },
+        {
+          "name": "注册表编辑器",
+          "command": "regedit",
+          "description": "打开注册表编辑器 - 修改系统设置",
+          "color": "#795548"
+        },
+        {
+          "name": "服务管理器",
+          "command": "services.msc",
+          "description": "打开服务管理器 - 管理系统服务",
+          "color": "#9E9E9E"
+        },
+        {
+          "name": "设备管理器",
+          "command": "devmgmt.msc",
+          "description": "打开设备管理器 - 管理硬件设备",
+          "color": "#673AB7"
+        }
+      ]
+    },
+    {
+      "id": "cg_render",
+      "name": "渲染工具",
+      "commands": [
+        {
+          "name": "启动Deadline监控",
+          "command": "\"C:\\Program Files\\Thinkbox\\Deadline10\\bin\\deadlinecommand.exe\" -launchmonitor",
+          "description": "启动Deadline渲染农场监控器 - 用于监控和管理渲染任务",
+          "color": "#E91E63"
+        },
+        {
+          "name": "Deadline状态",
+          "command": "\"C:\\Program Files\\Thinkbox\\Deadline10\\bin\\deadlinecommand.exe\" -GetFarmStatistics",
+          "description": "获取Deadline渲染农场状态统计 - 显示当前渲染节点和任务信息",
+          "color": "#9C27B0"
+        },
+        {
+          "name": "渲染节点列表",
+          "command": "\"C:\\Program Files\\Thinkbox\\Deadline10\\bin\\deadlinecommand.exe\" -GetSlaveNames",
+          "description": "获取所有渲染节点列表 - 显示可用的渲染机器",
+          "color": "#673AB7"
+        },
+        {
+          "name": "任务列表",
+          "command": "\"C:\\Program Files\\Thinkbox\\Deadline10\\bin\\deadlinecommand.exe\" -GetJobs",
+          "description": "获取所有渲染任务列表 - 显示当前队列中的任务",
+          "color": "#3F51B5"
+        },
+        {
+          "name": "提交Houdini渲染",
+          "command": "hython $HFS/bin/hrender.py <hip_file> -d <driver>",
+          "description": "命令行提交Houdini渲染任务 - 直接从命令行渲染Houdini场景",
+          "color": "#2196F3"
+        },
+        {
+          "name": "提交Maya渲染",
+          "command": "\"C:\\Program Files\\Autodesk\\Maya2023\\bin\\Render.exe\" -r <renderer> <maya_file>",
+          "description": "命令行提交Maya渲染任务 - 使用指定渲染器渲染Maya场景",
+          "color": "#03A9F4"
+        },
+        {
+          "name": "提交Nuke渲染",
+          "command": "\"C:\\Program Files\\Nuke13.0v1\\Nuke13.0.exe\" -x <nuke_script> <frame_range>",
+          "description": "命令行提交Nuke渲染任务 - 批量渲染Nuke合成",
+          "color": "#00BCD4"
+        },
+        {
+          "name": "查看GPU状态",
+          "command": "nvidia-smi",
+          "description": "查看NVIDIA GPU状态 - 显示GPU使用率、内存、温度等信息",
+          "color": "#009688"
+        },
+        {
+          "name": "清理渲染缓存",
+          "command": "powershell -Command \"Get-ChildItem -Path $env:TEMP\\*_render_* -Recurse | Remove-Item -Force -Recurse\"",
+          "description": "清理临时渲染缓存文件 - 释放磁盘空间",
+          "color": "#4CAF50"
+        },
+        {
+          "name": "查看渲染日志",
+          "command": "powershell -Command \"Get-Content -Path <log_file> -Tail 50\"",
+          "description": "查看渲染日志文件的最后50行 - 用于故障排查",
+          "color": "#8BC34A"
+        }
+      ]
+    },
+    {
+      "id": "cg_asset",
+      "name": "资产管理",
+      "commands": [
+        {
+          "name": "启动Shotgun",
+          "command": "start \"\" \"https://shotgrid.autodesk.com/\"",
+          "description": "打开Shotgun/ShotGrid资产管理系统 - 项目和资产跟踪",
+          "color": "#2196F3"
+        },
+        {
+          "name": "启动Perforce",
+          "command": "p4v",
+          "description": "启动Perforce版本控制客户端 - 用于资产版本管理",
+          "color": "#3F51B5"
+        },
+        {
+          "name": "Perforce状态",
+          "command": "p4 info",
+          "description": "显示Perforce连接状态和用户信息 - 检查版本控制连接",
+          "color": "#673AB7"
+        },
+        {
+          "name": "检出文件",
+          "command": "p4 edit <file_path>",
+          "description": "从Perforce检出文件进行编辑 - 锁定文件以防止冲突",
+          "color": "#9C27B0"
+        },
+        {
+          "name": "提交更改",
+          "command": "p4 submit -d \"<description>\"",
+          "description": "提交更改到Perforce - 将修改后的文件保存到版本控制系统",
+          "color": "#E91E63"
+        },
+        {
+          "name": "资产同步",
+          "command": "p4 sync",
+          "description": "同步最新资产 - 从Perforce获取最新版本的资产",
+          "color": "#00BCD4"
+        },
+        {
+          "name": "资产历史",
+          "command": "p4 filelog <file_path>",
+          "description": "查看文件历史记录 - 显示资产的修改历史",
+          "color": "#009688"
+        },
+        {
+          "name": "启动ftrack",
+          "command": "start \"\" \"https://ftrack.com/en/sign-in\"",
+          "description": "打开ftrack项目管理系统 - 用于项目跟踪和协作",
+          "color": "#4CAF50"
+        },
+        {
+          "name": "资产预览",
+          "command": "\"C:\\Program Files\\DJV2\\bin\\djv.exe\" <file_path>",
+          "description": "使用DJV查看资产 - 预览图像序列和视频",
+          "color": "#8BC34A"
+        },
+        {
+          "name": "资产转换",
+          "command": "ffmpeg -i <input_file> <output_file>",
+          "description": "使用FFmpeg转换媒体格式 - 视频和图像格式转换",
+          "color": "#CDDC39"
+        }
+      ]
+    },
+    {
+      "id": "cg_pipeline",
+      "name": "管道工具",
+      "commands": [
+        {
+          "name": "启动Houdini",
+          "command": "\"C:\\Program Files\\Side Effects Software\\Houdini 19.5.303\\bin\\houdini.exe\"",
+          "description": "启动Houdini - 3D程序化建模和特效软件",
+          "color": "#FF5722"
+        },
+        {
+          "name": "启动Maya",
+          "command": "\"C:\\Program Files\\Autodesk\\Maya2023\\bin\\maya.exe\"",
+          "description": "启动Maya - 3D建模、动画和渲染软件",
+          "color": "#FF9800"
+        },
+        {
+          "name": "启动Nuke",
+          "command": "\"C:\\Program Files\\Nuke13.0v1\\Nuke13.0.exe\"",
+          "description": "启动Nuke - 专业合成软件",
+          "color": "#FFC107"
+        },
+        {
+          "name": "启动Blender",
+          "command": "\"C:\\Program Files\\Blender Foundation\\Blender 3.3\\blender.exe\"",
+          "description": "启动Blender - 开源3D创作套件",
+          "color": "#FF5722"
+        },
+        {
+          "name": "启动Substance",
+          "command": "\"C:\\Program Files\\Adobe\\Adobe Substance 3D Designer\\Adobe Substance 3D Designer.exe\"",
+          "description": "启动Substance Designer - 材质创建工具",
+          "color": "#795548"
+        },
+        {
+          "name": "启动ZBrush",
+          "command": "\"C:\\Program Files\\Pixologic\\ZBrush 2022\\ZBrush.exe\"",
+          "description": "启动ZBrush - 数字雕刻和绘画软件",
+          "color": "#9E9E9E"
+        },
+        {
+          "name": "启动After Effects",
+          "command": "\"C:\\Program Files\\Adobe\\Adobe After Effects 2023\\Support Files\\AfterFX.exe\"",
+          "description": "启动After Effects - 视觉效果和动态图形软件",
+          "color": "#607D8B"
+        },
+        {
+          "name": "启动Photoshop",
+          "command": "\"C:\\Program Files\\Adobe\\Adobe Photoshop 2023\\Photoshop.exe\"",
+          "description": "启动Photoshop - 图像编辑和合成软件",
+          "color": "#2196F3"
+        },
+        {
+          "name": "启动RV播放器",
+          "command": "\"C:\\Program Files\\Shotgun\\RV-2021.0.0\\bin\\rv.exe\"",
+          "description": "启动RV - 专业媒体播放器和审阅工具",
+          "color": "#673AB7"
+        },
+        {
+          "name": "启动Unreal",
+          "command": "\"C:\\Program Files\\Epic Games\\UE_5.0\\Engine\\Binaries\\Win64\\UnrealEditor.exe\"",
+          "description": "启动Unreal Engine - 实时3D创作平台",
+          "color": "#E91E63"
+        }
+      ]
+    },
+    {
+      "id": "cg_utility",
+      "name": "CG实用工具",
+      "commands": [
+        {
+          "name": "图像序列重命名",
+          "command": "powershell -Command \"Get-ChildItem -Path <folder> -Filter *.exr | ForEach-Object -Begin {$i=1} -Process {Rename-Item $_.FullName -NewName (\"seq_{0:d4}.exr\" -f $i); $i++}\"",
+          "description": "批量重命名图像序列 - 将文件按顺序重命名为seq_0001.exr格式",
+          "color": "#2196F3"
+        },
+        {
+          "name": "文件批量转换",
+          "command": "for %f in (<folder>\\*.png) do ffmpeg -i \"%f\" -q:v 1 \"%~nf.jpg\"",
+          "description": "批量转换文件格式 - 例如将PNG转换为JPG",
+          "color": "#3F51B5"
+        },
+        {
+          "name": "创建缩略图",
+          "command": "for %f in (<folder>\\*.exr) do ffmpeg -i \"%f\" -vf \"scale=256:-1\" \"thumbs\\%~nf_thumb.jpg\"",
+          "description": "批量创建图像缩略图 - 用于快速预览",
+          "color": "#673AB7"
+        },
+        {
+          "name": "生成视频",
+          "command": "ffmpeg -framerate 24 -i <folder>\\frame_%04d.png -c:v libx264 -pix_fmt yuv420p output.mp4",
+          "description": "从图像序列生成视频 - 将渲染帧合并为视频文件",
+          "color": "#9C27B0"
+        },
+        {
+          "name": "提取音频",
+          "command": "ffmpeg -i <input_video> -vn -acodec copy audio.aac",
+          "description": "从视频中提取音频 - 分离音频轨道",
+          "color": "#E91E63"
+        },
+        {
+          "name": "合并音视频",
+          "command": "ffmpeg -i <video_file> -i <audio_file> -c:v copy -c:a aac -map 0:v:0 -map 1:a:0 output.mp4",
+          "description": "合并视频和音频文件 - 创建完整的音视频文件",
+          "color": "#00BCD4"
+        },
+        {
+          "name": "视频裁剪",
+          "command": "ffmpeg -i <input_video> -ss 00:01:00 -to 00:02:00 -c:v copy -c:a copy output.mp4",
+          "description": "裁剪视频片段 - 提取指定时间范围的视频",
+          "color": "#009688"
+        },
+        {
+          "name": "视频压缩",
+          "command": "ffmpeg -i <input_video> -vf \"scale=1280:-1\" -c:v libx264 -crf 23 -preset medium -c:a aac -b:a 128k compressed.mp4",
+          "description": "压缩视频文件 - 减小文件大小以便分享",
+          "color": "#4CAF50"
+        },
+        {
+          "name": "批量压缩图像",
+          "command": "powershell -Command \"Get-ChildItem -Path <folder> -Filter *.png | ForEach-Object { magick convert $_.FullName -quality 85 ($_.DirectoryName + '\\compressed_' + $_.Name) }\"",
+          "description": "批量压缩图像文件 - 减小文件大小",
+          "color": "#8BC34A"
+        },
+        {
+          "name": "清理临时文件",
+          "command": "powershell -Command \"Get-ChildItem -Path <folder> -Include *.tmp,*.temp,*_backup -Recurse | Remove-Item -Force\"",
+          "description": "清理CG项目临时文件 - 释放磁盘空间",
+          "color": "#F44336"
+        }
+      ]
+    },
+    {
+      "id": "data_tools",
+      "name": "数据处理工具",
+      "commands": [
+        {
+          "name": "CSV查看",
+          "command": "powershell -Command \"Import-Csv <file.csv> | Format-Table -AutoSize | Out-Host -Paging\"",
+          "description": "查看CSV文件内容 - 以表格形式显示数据",
+          "color": "#2196F3"
+        },
+        {
+          "name": "CSV转JSON",
+          "command": "powershell -Command \"Import-Csv <file.csv> | ConvertTo-Json | Out-File <output.json> -Encoding UTF8\"",
+          "description": "将CSV文件转换为JSON格式 - 数据格式转换",
+          "color": "#3F51B5"
+        },
+        {
+          "name": "JSON格式化",
+          "command": "powershell -Command \"Get-Content <file.json> | ConvertFrom-Json | ConvertTo-Json -Depth 10 | Out-File <formatted.json> -Encoding UTF8\"",
+          "description": "格式化JSON文件 - 提高可读性",
+          "color": "#673AB7"
+        },
+        {
+          "name": "XML格式化",
+          "command": "powershell -Command \"[xml]$xml = Get-Content <file.xml>; $xml.Save('<formatted.xml>')\"",
+          "description": "格式化XML文件 - 提高可读性",
+          "color": "#9C27B0"
+        },
+        {
+          "name": "文本排序",
+          "command": "sort <input.txt> > <sorted.txt>",
+          "description": "对文本文件内容进行排序 - 按字母顺序排列",
+          "color": "#E91E63"
+        },
+        {
+          "name": "文本去重",
+          "command": "powershell -Command \"Get-Content <input.txt> | Sort-Object | Get-Unique > <unique.txt>\"",
+          "description": "移除文本文件中的重复行 - 保留唯一值",
+          "color": "#00BCD4"
+        },
+        {
+          "name": "文本统计",
+          "command": "powershell -Command \"(Get-Content <file.txt> | Measure-Object -Line -Word -Character).Count\"",
+          "description": "统计文本文件的行数、字数和字符数 - 文本分析",
+          "color": "#4CAF50"
+        },
+        {
+          "name": "文本查找",
+          "command": "powershell -Command \"Select-String -Path <file.txt> -Pattern '<pattern>' -Context 2,2\"",
+          "description": "在文本文件中查找匹配的模式 - 显示上下文",
+          "color": "#8BC34A"
+        },
+        {
+          "name": "文本替换",
+          "command": "powershell -Command \"(Get-Content <file.txt>) -replace '<old>', '<new>' | Set-Content <file.txt>\"",
+          "description": "在文本文件中替换文本 - 批量文本修改",
+          "color": "#009688"
+        },
+        {
+          "name": "文件合并",
+          "command": "powershell -Command \"Get-Content <file1.txt>, <file2.txt> | Set-Content <merged.txt>\"",
+          "description": "合并多个文本文件 - 创建单一文件",
+          "color": "#FF9800"
+        },
+        {
+          "name": "Excel转CSV",
+          "command": "powershell -Command \"$excel = New-Object -ComObject Excel.Application; $wb = $excel.Workbooks.Open('<file.xlsx>'); $wb.SaveAs('<output.csv>', 6); $excel.Quit()\"",
+          "description": "将Excel文件转换为CSV格式 - 数据提取",
+          "color": "#FF5722"
+        },
+        {
+          "name": "图像元数据",
+          "command": "powershell -Command \"$shell = New-Object -ComObject Shell.Application; $folder = $shell.Namespace((Get-Item '<image.jpg>').DirectoryName); $file = $folder.ParseName((Get-Item '<image.jpg>').Name); 0..287 | ForEach-Object {if ($folder.GetDetailsOf($null, $_) -and $folder.GetDetailsOf($file, $_)) {$folder.GetDetailsOf($null, $_) + ': ' + $folder.GetDetailsOf($file, $_)}}\"",
+          "description": "提取图像文件的元数据 - 查看EXIF信息",
+          "color": "#607D8B"
+        },
+        {
+          "name": "PDF文本提取",
+          "command": "python -c \"import fitz; doc = fitz.open('<file.pdf>'); text = ''; [text := text + page.get_text() for page in doc]; print(text)\"",
+          "description": "从PDF文件提取文本 - 需要安装PyMuPDF",
+          "color": "#795548"
+        },
+        {
+          "name": "数据可视化",
+          "command": "python -c \"import matplotlib.pyplot as plt; import pandas as pd; df = pd.read_csv('<file.csv>'); df.plot(); plt.savefig('plot.png'); plt.show()\"",
+          "description": "使用Python可视化CSV数据 - 需要安装pandas和matplotlib",
+          "color": "#9E9E9E"
+        },
+        {
+          "name": "SQL查询CSV",
+          "command": "python -c \"import pandas as pd; import sqlite3; df = pd.read_csv('<file.csv>'); conn = sqlite3.connect(':memory:'); df.to_sql('data', conn, index=False); print(pd.read_sql_query('SELECT * FROM data WHERE <column> > <value>', conn))\"",
+          "description": "使用SQL查询CSV数据 - 需要安装pandas",
+          "color": "#CDDC39"
+        }
+      ]
+    },
+    {
+      "id": "custom",
+      "name": "自定义命令",
+      "commands": [
+        {
+          "name": "打开项目文件夹",
+          "command": "explorer .",
+          "description": "在文件资源管理器中打开当前目录 - 快速访问项目文件",
+          "color": "#2196F3"
+        },
+        {
+          "name": "打开VS Code",
+          "command": "code .",
+          "description": "在VS Code中打开当前目录 - 开始编辑项目",
+          "color": "#3F51B5"
+        },
+        {
+          "name": "系统清理",
+          "command": "cleanmgr",
+          "description": "打开磁盘清理工具 - 释放磁盘空间",
+          "color": "#4CAF50"
+        },
+        {
+          "name": "截图工具",
+          "command": "snippingtool",
+          "description": "打开Windows截图工具 - 捕获屏幕区域",
+          "color": "#FF9800"
+        },
+        {
+          "name": "计算器",
+          "command": "calc",
+          "description": "打开Windows计算器 - 进行快速计算",
+          "color": "#9C27B0"
+        },
+        {
+          "name": "备份脚本",
+          "command": "powershell -Command \"Copy-Item -Path '<source_folder>' -Destination '<backup_folder>' -Recurse -Force\"",
+          "description": "将指定文件夹备份到目标位置 - 数据安全保护",
+          "color": "#00BCD4"
+        },
+        {
+          "name": "定时关机",
+          "command": "shutdown /s /t 3600",
+          "description": "设置计算机在1小时后自动关机 - 节能管理",
+          "color": "#FF5722"
+        },
+        {
+          "name": "取消关机",
+          "command": "shutdown /a",
+          "description": "取消预定的关机操作 - 中止自动关机",
+          "color": "#607D8B"
+        },
+        {
+          "name": "自定义示例1",
+          "command": "echo 这是一个自定义命令示例",
+          "description": "自定义命令示例 - 可根据需要修改",
+          "color": "#795548"
+        },
+        {
+          "name": "自定义示例2",
+          "command": "powershell -Command \"Write-Host '自定义PowerShell命令示例' -ForegroundColor Green\"",
+          "description": "自定义PowerShell命令示例 - 可根据需要修改",
+          "color": "#9E9E9E"
+        }
+      ]
+    }
+  ],
+  "settings": {
+    "dark_theme": {
+      "background": "#2d2d2d",
+      "text": "#ffffff",
+      "button": "#3a3a3a",
+      "accent": "#2196F3"
+    },
+    "light_theme": {
+      "background": "#f5f5f5",
+      "text": "#333333",
+      "button": "#e0e0e0",
+      "accent": "#2196F3"
+    },
+    "tab_position": "left"
+  }
+} 

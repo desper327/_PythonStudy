@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% if asset %}Edit{% else %}Add{% endif %} Asset</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>{% if asset %}Edit{% else %}Add{% endif %} Asset</h1>
+    <form method="POST" enctype="multipart/form-data">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" value="{{ asset[1] if asset else '' }}" required><br>
+
+        <label for="Chinese_name">Chinese Name:</label>  <!-- 新增字段 -->
+        <input type="text" id="Chinese_name" name="Chinese_name" value="{{ asset[2] if asset else '' }}"><br>
+
+        <label for="thumbnail">Thumbnail:</label>
+        <input type="file" id="thumbnail" name="thumbnail"><br>
+
+        <label for="model_path">Model Path:</label>
+        <input type="text" id="model_path" name="model_path" value="{{ asset[4] if asset else '' }}" required><br>
+
+        <label for="bind_path">Bind Path:</label>
+        <input type="text" id="bind_path" name="bind_path" value="{{ asset[5] if asset else '' }}" required><br>
+
+        <label for="texture_path">Texture Path:</label>
+        <input type="text" id="texture_path" name="texture_path" value="{{ asset[6] if asset else '' }}" required><br>
+
+        <label for="description">Description:</label>
+        <textarea id="description" name="description">{{ asset[7] if asset else '' }}</textarea><br>
+
+        <button type="submit" class="btn">Save</button>
+        <a href="{{ url_for('index') }}" class="btn btn-danger">Cancel</a>
+    </form>
+</body>
+</html>

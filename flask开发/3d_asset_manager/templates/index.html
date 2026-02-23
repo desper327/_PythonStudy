@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>3D Asset Manager</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>3D Asset Manager</h1>
+    <a href="{{ url_for('add') }}" class="btn">Add Asset</a>
+    <table>
+        <thead>
+            <tr>
+                <th>Thumbnail</th>
+                <th>Name</th>
+                <th>Chinese Name</th>  <!-- 新增列 -->
+                <th>Model Path</th>
+                <th>Bind Path</th>
+                <th>Texture Path</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for asset in assets %}
+            <tr>
+                <td>
+                    {% if asset[3] %}
+                    <img src="{{ url_for('static', filename=asset[3]) }}" alt="Thumbnail" width="100" class="thumbnail">
+                    {% else %}
+                    No Thumbnail
+                    {% endif %}
+                </td>
+                <td>{{ asset[1] }}</td>
+                <td>{{ asset[2] }}</td>  <!-- 新增列 -->
+                <td>
+                    {{ asset[4] }}
+                    <button onclick="openPath('{{ asset[4] }}')">Open</button>
+                    <button onclick="copyPath('{{ asset[4] }}')">Copy</button>
+                    <ul>
+                        {% if asset[4] %}
+                            {% for file in list_files(asset[4]) %}
+                            <li><a href="file://{{ asset[4] }}/{{ file }}" target="_blank">{{ file }}</a></li>
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                </td>
+                <td>
+                    {{ asset[5] }}
+                    <button onclick="openPath('{{ asset[5] }}')">Open</button>
+                    <button onclick="copyPath('{{ asset[5] }}')">Copy</button>
+                    <ul>
+                        {% if asset[5] %}
+                            {% for file in list_files(asset[5]) %}
+                            <li><a href="file://{{ asset[5] }}/{{ file }}" target="_blank">{{ file }}</a></li>
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                </td>
+                <td>
+                    {{ asset[6] }}
+                    <button onclick="openPath('{{ asset[6] }}')">Open</button>
+                    <button onclick="copyPath('{{ asset[6] }}')">Copy</button>
+                    <ul>
+                        {% if asset[6] %}
+                            {% for file in list_files(asset[6]) %}
+                            <li><a href="file://{{ asset[6] }}/{{ file }}" target="_blank">{{ file }}</a></li>
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                </td>
+                <td>{{ asset[7] }}</td>
+                <td>
+                    <a href="{{ url_for('edit', asset_id=asset[0]) }}" class="btn">Edit</a>
+                    <a href="{{ url_for('delete', asset_id=asset[0]) }}" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        // 打开路径
+        function openPath(path) {
+            window.open(`file://${path}`, '_blank');
+            //window.location.href = `file://${path}`;
+        }
+
+        // 复制路径
+        function copyPath(path) {
+            navigator.clipboard.writeText(path).then(() => {
+                alert('Path copied to clipboard!');
+            });
+        }
+    </script>
+</body>
+</html>

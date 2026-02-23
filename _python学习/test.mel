@@ -1,0 +1,902 @@
+
+
+//Cache_Expr==================================================================================================================================
+int $startFrame = 101;
+int $endFrame = 200; 
+Hair_ABCN.time    = $startFrame + ((frame * pd_con.cacheHairSpeed)   % ($endFrame - $startFrame + 2));
+Cloth_ABCN.time   = $startFrame + ((frame * pd_con.cacheClothSpeed)  % ($endFrame - $startFrame + 2));
+Qun_ABCN.time     = $startFrame + ((frame * pd_con.cacheSkirtSpeed)  % ($endFrame - $startFrame + 2));
+PiaoDai_ABCN.time = $startFrame + ((frame * pd_con.cacheRibbonSpeed) % ($endFrame - $startFrame + 2));
+
+
+
+
+
+
+
+
+//Cloth_Expr==================================================================================================================================
+// 衣服解算
+C_ErLangShen_Mod_Cloth02_Geo_vnBS.NeiYi_Random = pd_con.cacheClothSwitch / 10;
+
+
+// 衣服褶皱
+float $switch_spine_left = clamp(0, 1, (Spine1_M.rotateX + Spine2_M.rotateX + Chest_M.rotateX) / 60);
+float $switch_spine_right = clamp(0, 1, (Spine1_M.rotateX + Spine2_M.rotateX + Chest_M.rotateX) / -60);
+
+
+// 抬起肩膀之后驱动褶皱会穿帮
+// float $switch_scapula_left = clamp(0, 1, FKScapula_L.rotateY / -40);
+// float $switch_scapula_right = clamp(0, 1, FKScapula_R.rotateY / -40);
+float $switch_scapula_left = 0;
+float $switch_scapula_right = 0;
+
+C_ErLangShen_Mod_Cloth02_Geo_vnBS.turn_left = clamp(0, 1, $switch_spine_left + $switch_scapula_left);
+C_ErLangShen_Mod_Cloth02_Geo_vnBS.turn_right = clamp(0, 1, $switch_spine_right + $switch_scapula_right);
+
+
+
+
+
+
+
+
+
+//Follow_Expr==================================================================================================================================
+float $switch = pd_con.otherCollisionSwitch / 10;
+
+// 碰撞Hip
+Mi_Ft_Jia_01_fk_ctrl_ofs.rotateZ  = $switch * -90 * max(clamp(0, 1, (Hip_R.rotateZ-15)/75), clamp(0, 1, (Hip_L.rotateZ-15)/75));
+Mi_Ft_Jia_01_fk_ctrl_ofs.rotateX  = $switch * -45 * clamp(0, 1, (Hip_R.rotateZ-15)/75) * clamp(0, 1, (1 - (Hip_L.rotateZ-60)/30)) + 45 * clamp(0, 1, (Hip_L.rotateZ-15)/75) * clamp(0, 1, (1 - (Hip_R.rotateZ-60)/30));
+Mi_Ft_Jia2_01_fk_ctrl_ofs.rotateZ = $switch * -85 * max(clamp(0, 1, (Hip_R.rotateZ-15)/75), clamp(0, 1, (Hip_L.rotateZ-15)/75));
+Mi_Ft_Jia2_01_fk_ctrl_ofs.rotateX = $switch * -45 * clamp(0, 1, (Hip_R.rotateZ-15)/75) * clamp(0, 1, (1 - (Hip_L.rotateZ-60)/30)) + 45 * clamp(0, 1, (Hip_L.rotateZ-15)/75) * clamp(0, 1, (1 - (Hip_R.rotateZ-60)/30));
+Mi_Bk_Jia_01_fk_ctrl_ofs.rotateZ  = $switch * 95 * max(clamp(0, 1, (-Hip_R.rotateZ-15)/75), clamp(0, 1, (-Hip_L.rotateZ-15)/75));
+Mi_Bk_Jia_01_fk_ctrl_ofs.rotateX  = $switch * 45 * clamp(0, 1, (-Hip_R.rotateZ-15)/75) * clamp(0, 1, (1 - (-Hip_L.rotateZ-60)/30)) + -45 * clamp(0, 1, (-Hip_L.rotateZ-15)/75) * clamp(0, 1, (1 - (-Hip_R.rotateZ-60)/30));
+
+Lf_Ft_Qun_01_fk_ctrl_object_grp1.rotateX = $switch * -88 * clamp(0, 1, (Hip_L.rotateZ-10)/80);
+Rt_Ft_Qun_01_fk_ctrl_object_grp1.rotateX = $switch * -88 * clamp(0, 1, (Hip_R.rotateZ-10)/80);
+Rt_Qun_01_fk_ctrl_object_grp1.rotateZ    = $switch * -80 * clamp(0, 1, (-Hip_R.rotateY-10)/80);
+Lf_Qun_01_fk_ctrl_object_grp1.rotateZ    = $switch * 80 * clamp(0, 1, (-Hip_L.rotateY-10)/80);
+Lf_Bk_Qun_01_fk_ctrl_object_grp1.rotateX = $switch * 88 * clamp(0, 1, (-Hip_L.rotateZ-10)/80);
+Rt_Bk_Qun_01_fk_ctrl_object_grp1.rotateX = $switch * 88 * clamp(0, 1, (-Hip_R.rotateZ-10)/80);
+
+Lf_Ft_Jia_01_fk_ctrl_object_grp1.rotateX = $switch * -80 * clamp(0, 1, (Hip_L.rotateZ-10)/80);
+Lf_Ft_Jia_01_fk_ctrl_object_grp1.rotateZ = $switch * 75 * clamp(0, 1, (-Hip_L.rotateY-10)/80) + 25 * clamp(0, 1, Hip_L.rotateX/30);
+Rt_Ft_Jia_01_fk_ctrl_object_grp1.rotateX = $switch * -80 * clamp(0, 1, (Hip_R.rotateZ-10)/80) + -0 * clamp(0, 1, Hip_R.rotateX/30);
+Rt_Ft_Jia_01_fk_ctrl_object_grp1.rotateZ = $switch * -75 * clamp(0, 1, (-Hip_R.rotateY-10)/80) + -25 * clamp(0, 1, Hip_R.rotateX/30);
+
+Lf_Bk_Jia_01_fk_ctrl_object_grp1.rotateX = $switch * 80 * clamp(0, 1, (-Hip_L.rotateZ-10)/80);
+Lf_Bk_Jia_01_fk_ctrl_object_grp1.rotateZ = $switch * 75 * clamp(0, 1, (-Hip_L.rotateY-10)/80) + 25 * clamp(0, 1, -Hip_L.rotateX/30);
+Rt_Bk_Jia_01_fk_ctrl_object_grp1.rotateX = $switch * 80 * clamp(0, 1, (-Hip_R.rotateZ-10)/80);
+Rt_Bk_Jia_01_fk_ctrl_object_grp1.rotateZ = $switch * -75 * clamp(0, 1, (-Hip_R.rotateY-10)/80) + -25 * clamp(0, 1, -Hip_R.rotateX/30);
+
+FKyaokai_c_1_L_object_grp1.rotateX  = $switch * -80 * clamp(0, 1, (Hip_L.rotateZ-10)/80) + 5 * clamp(0, 1, (-Hip_L.rotateZ-10)/80);
+FKyaokai_c_1_L_object_grp1.rotateZ  = $switch * 15 * clamp(0, 1, (Hip_L.rotateZ-10)/80) + 60 * clamp(0, 1, (-Hip_L.rotateY-10)/80) + 15 * clamp(0, 1, Hip_L.rotateX/30);
+FKyaokkai_a_1_L_object_grp1.rotateX = $switch * -15 * clamp(0, 1, (Hip_L.rotateZ-10)/80) + 35 * clamp(0, 1, (-Hip_L.rotateZ-10)/80);
+FKyaokkai_a_1_L_object_grp1.rotateZ = $switch * 10 * clamp(0, 1, (Hip_L.rotateZ-10)/80) + 90 * clamp(0, 1, (-Hip_L.rotateY-10)/80) + 5 * clamp(0, 1, Hip_L.rotateX/30) + 20 * clamp(0, 1, (-Hip_L.rotateZ-10)/80);
+FKyaokai_b_1_L_object_grp1.rotateX  = $switch * clamp(0, 90, 90 * clamp(0, 1, (-Hip_L.rotateZ-10)/80) + 75 * clamp(0, 1, (-Hip_R.rotateZ-10)/80));
+FKyaokai_b_1_L_object_grp1.rotateZ  = $switch * -20 * clamp(0, 1, (-Hip_R.rotateZ-10)/80) * clamp(0, 1, (1-(-Hip_L.rotateZ-60)/30));
+FKyaokai_c_1_R_object_grp1.rotateX  = $switch * -80 * clamp(0, 1, (Hip_R.rotateZ-10)/80) + 5 * clamp(0, 1, (-Hip_R.rotateZ-10)/80);
+FKyaokai_c_1_R_object_grp1.rotateZ  = $switch * -15 * clamp(0, 1, (Hip_R.rotateZ-10)/80) + -60 * clamp(0, 1, (-Hip_R.rotateY-10)/80) + -15 * clamp(0, 1, Hip_R.rotateX/30);
+FKyaokkai_a_1_R_object_grp1.rotateX = $switch * -15 * clamp(0, 1, (Hip_R.rotateZ-10)/80) + 35 * clamp(0, 1, (-Hip_R.rotateZ-10)/80);
+FKyaokkai_a_1_R_object_grp1.rotateZ = $switch * -10 * clamp(0, 1, (Hip_R.rotateZ-10)/80) + -90 * clamp(0, 1, (-Hip_R.rotateY-10)/80) + -5 * clamp(0, 1, Hip_R.rotateX/30) + -20 * clamp(0, 1, (-Hip_R.rotateZ-10)/80);
+FKyaokai_b_1_R_object_grp1.rotateX  = $switch * clamp(0, 90, 75 * clamp(0, 1, (-Hip_L.rotateZ-10)/80) + 90 * clamp(0, 1, (-Hip_R.rotateZ-10)/80));
+FKyaokai_b_1_R_object_grp1.rotateZ  = $switch * 20 * clamp(0, 1, (-Hip_L.rotateZ-10)/80) * clamp(0, 1, (1-(-Hip_R.rotateZ-60)/30));
+
+
+// 碰撞Knee
+Lf_Ft_Qun_4_fk_ctrl_object_grp1.rotateX = $switch * 85 * min(clamp(0, 1, Hip_L.rotateZ / 90), clamp(0, 1, Knee_L.rotateZ / -90));
+Rt_Ft_Qun_4_fk_ctrl_object_grp1.rotateX = $switch * 85 * min(clamp(0, 1, Hip_R.rotateZ / 90), clamp(0, 1, Knee_R.rotateZ / -90));
+
+
+// BS
+C_ErLangShen_Mod_Cloth06_03_Geo_vnBS.jack_right = $switch * min(clamp(0, 1, Hip_R.rotateZ / 90), clamp(0, 1, Knee_R.rotateZ / -90));
+C_ErLangShen_Mod_Cloth06_03_Geo_vnBS.jack_left = $switch * min(clamp(0, 1, Hip_L.rotateZ / 90), clamp(0, 1, Knee_L.rotateZ / -90));
+
+
+
+
+
+
+
+
+//Hair_Expr==================================================================================================================================
+// 衣服解算
+C_ErLangShen_Mod_Hair02_Geo_vnBS.Hair_Cache_GRP = pd_con.cacheHairSwitch / 10;
+
+
+// Sine
+// 计算移动速度
+float $move_switch = pd_con.moveSpeed / 100.0;
+
+float $sine_switch = pd_con.sineHairSwitch / 10;
+C_ErLangShen_Mod_Hair02_Geo_vnBS.Hair_Sine_GRP = $sine_switch;
+
+Hair02_Sine.offset = frame * (pd_con.sineHairSpeed + $move_switch);
+Hair03_Sine.offset = frame * (pd_con.sineHairSpeed + $move_switch);
+Hair04_Sine.offset = frame * (pd_con.sineHairSpeed + $move_switch);
+Hair05_Sine.offset = frame * (pd_con.sineHairSpeed + $move_switch);
+
+Hair02_Sine.amplitude = pd_con.sineHairAmplitude * 0.05 + $move_switch * 0.2;
+Hair03_Sine.amplitude = pd_con.sineHairAmplitude * 0.05 + $move_switch * 0.2;
+Hair04_Sine.amplitude = pd_con.sineHairAmplitude * 0.05 + $move_switch * 0.2;
+Hair05_Sine.amplitude = pd_con.sineHairAmplitude * 0.05 + $move_switch * 0.2;
+
+Hair02_Sine.wavelength = pd_con.sineHairAmplitude * 0.02 + pd_con.sineHairWavelength * 0.5 + $move_switch * 5;
+Hair03_Sine.wavelength = pd_con.sineHairAmplitude * 0.02 + pd_con.sineHairWavelength * 0.5 + $move_switch * 5;
+Hair04_Sine.wavelength = pd_con.sineHairAmplitude * 0.02 + pd_con.sineHairWavelength * 0.5 + $move_switch * 5;
+Hair05_Sine.wavelength = pd_con.sineHairAmplitude * 0.02 + pd_con.sineHairWavelength * 0.5 + $move_switch * 5;
+
+
+// Wind
+float $wind_power = pd_con.windPower * 3;
+float $state_pos = clamp(0, 10, pd_con.windHairState) / 10;
+float $state_neg = clamp(0, 10, -pd_con.windHairState) / 10;
+
+// X轴
+float $x_switch = pd_con.translateX / 10;
+mawei1_M_fk_ctrl_object_grp.rotateZ  = (clamp(0, 1, $x_switch) + -clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 3 / 3 - $state_neg * 0 / 3);
+mawei2_M_fk_ctrl_object_grp.rotateZ  = (clamp(0, 1, $x_switch) + -clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 2 / 3 - $state_neg * 1 / 3);
+mawei3_M_fk_ctrl_object_grp.rotateZ  = (clamp(0, 1, $x_switch) + -clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 1 / 3 - $state_neg * 2 / 3);
+mawei4_M_fk_ctrl_object_grp.rotateZ  = (clamp(0, 1, $x_switch) + -clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 0 / 3 - $state_neg * 3 / 3);
+
+pifa1_M_fk_ctrl_object_grp.rotateZ   = (clamp(0, 1, $x_switch) + -clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 3 / 3 - $state_neg * 0 / 3);
+pifa2_M_fk_ctrl_object_grp.rotateZ   = (clamp(0, 1, $x_switch) + -clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 2 / 3 - $state_neg * 1 / 3);
+pifa3_M_fk_ctrl_object_grp.rotateZ   = (clamp(0, 1, $x_switch) + -clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 1 / 3 - $state_neg * 2 / 3);
+pifa4_M_fk_ctrl_object_grp.rotateZ   = (clamp(0, 1, $x_switch) + -clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 0 / 3 - $state_neg * 3 / 3);
+
+liuhai1_R_fk_ctrl_object_grp.rotateZ = (clamp(0, 1, $x_switch) + -clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 3 / 3 - $state_neg * 0 / 3);
+liuhai2_R_fk_ctrl_object_grp.rotateZ = (clamp(0, 1, $x_switch) + -clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 2 / 3 - $state_neg * 1 / 3);
+liuhai3_R_fk_ctrl_object_grp.rotateZ = (clamp(0, 1, $x_switch) + -clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 1 / 3 - $state_neg * 2 / 3);
+liuhai4_R_fk_ctrl_object_grp.rotateZ = (clamp(0, 1, $x_switch) + -clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 0 / 3 - $state_neg * 3 / 3);
+
+bingfa1_R_fk_ctrl_object_grp.rotateZ = (clamp(0, 1, $x_switch) + -clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 3 / 3 - $state_neg * 0 / 3);
+bingfa2_R_fk_ctrl_object_grp.rotateZ = (clamp(0, 1, $x_switch) + -clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 2 / 3 - $state_neg * 1 / 3);
+bingfa3_R_fk_ctrl_object_grp.rotateZ = (clamp(0, 1, $x_switch) + -clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 1 / 3 - $state_neg * 2 / 3);
+bingfa4_R_fk_ctrl_object_grp.rotateZ = (clamp(0, 1, $x_switch) + -clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 0 / 3 - $state_neg * 3 / 3);
+
+bingfa1_L_fk_ctrl_object_grp.rotateZ = (clamp(0, 1, $x_switch) + -clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 3 / 3 - $state_neg * 0 / 3);
+bingfa2_L_fk_ctrl_object_grp.rotateZ = (clamp(0, 1, $x_switch) + -clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 2 / 3 - $state_neg * 1 / 3);
+bingfa3_L_fk_ctrl_object_grp.rotateZ = (clamp(0, 1, $x_switch) + -clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 1 / 3 - $state_neg * 2 / 3);
+bingfa4_L_fk_ctrl_object_grp.rotateZ = (clamp(0, 1, $x_switch) + -clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 0 / 3 - $state_neg * 3 / 3);
+
+// Z轴
+float $z_switch = pd_con.translateZ / 10;
+mawei1_M_fk_ctrl_object_grp.rotateX  = -$z_switch * $wind_power * (1 - $state_pos * 3 / 3 - $state_neg * 0 / 3);
+mawei2_M_fk_ctrl_object_grp.rotateX  = -$z_switch * $wind_power * (1 - $state_pos * 2 / 3 - $state_neg * 1 / 3);
+mawei3_M_fk_ctrl_object_grp.rotateX  = -$z_switch * $wind_power * (1 - $state_pos * 1 / 3 - $state_neg * 2 / 3);
+mawei4_M_fk_ctrl_object_grp.rotateX  = -$z_switch * $wind_power * (1 - $state_pos * 0 / 3 - $state_neg * 3 / 3);
+
+pifa1_M_fk_ctrl_object_grp.rotateX   = -$z_switch * $wind_power * (1 - $state_pos * 3 / 3 - $state_neg * 0 / 3);
+pifa2_M_fk_ctrl_object_grp.rotateX   = -$z_switch * $wind_power * (1 - $state_pos * 2 / 3 - $state_neg * 1 / 3);
+pifa3_M_fk_ctrl_object_grp.rotateX   = -$z_switch * $wind_power * (1 - $state_pos * 1 / 3 - $state_neg * 2 / 3);
+pifa4_M_fk_ctrl_object_grp.rotateX   = -$z_switch * $wind_power * (1 - $state_pos * 0 / 3 - $state_neg * 3 / 3);
+
+liuhai1_R_fk_ctrl_object_grp.rotateX = -$z_switch * $wind_power * (1 - $state_pos * 3 / 3 - $state_neg * 0 / 3);
+liuhai2_R_fk_ctrl_object_grp.rotateX = -$z_switch * $wind_power * (1 - $state_pos * 2 / 3 - $state_neg * 1 / 3);
+liuhai3_R_fk_ctrl_object_grp.rotateX = -$z_switch * $wind_power * (1 - $state_pos * 1 / 3 - $state_neg * 2 / 3);
+liuhai4_R_fk_ctrl_object_grp.rotateX = -$z_switch * $wind_power * (1 - $state_pos * 0 / 3 - $state_neg * 3 / 3);
+
+bingfa1_R_fk_ctrl_object_grp.rotateX = -$z_switch * $wind_power * (1 - $state_pos * 3 / 3 - $state_neg * 0 / 3);
+bingfa2_R_fk_ctrl_object_grp.rotateX = -$z_switch * $wind_power * (1 - $state_pos * 2 / 3 - $state_neg * 1 / 3);
+bingfa3_R_fk_ctrl_object_grp.rotateX = -$z_switch * $wind_power * (1 - $state_pos * 1 / 3 - $state_neg * 2 / 3);
+bingfa4_R_fk_ctrl_object_grp.rotateX = -$z_switch * $wind_power * (1 - $state_pos * 0 / 3 - $state_neg * 3 / 3);
+
+bingfa1_L_fk_ctrl_object_grp.rotateX = -$z_switch * $wind_power * (1 - $state_pos * 3 / 3 - $state_neg * 0 / 3);
+bingfa2_L_fk_ctrl_object_grp.rotateX = -$z_switch * $wind_power * (1 - $state_pos * 2 / 3 - $state_neg * 1 / 3);
+bingfa3_L_fk_ctrl_object_grp.rotateX = -$z_switch * $wind_power * (1 - $state_pos * 1 / 3 - $state_neg * 2 / 3);
+bingfa4_L_fk_ctrl_object_grp.rotateX = -$z_switch * $wind_power * (1 - $state_pos * 0 / 3 - $state_neg * 3 / 3);
+
+
+
+
+
+
+
+
+
+//Ribbon_Expr==================================================================================================================================
+// 解算开关
+float $cache_switch = pd_con.cacheRibbonSwitch / 10;
+C_ErLangShen_Mod_Cloth09_02_Geo_vnBS.PiaoDai_Cache_Geo = $cache_switch;
+
+
+// Sine
+// 计算移动速度
+float $move_switch = pd_con.moveSpeed / 100.0;
+
+float $sine_switch = pd_con.sineRibbonSwitch / 10;
+C_ErLangShen_Mod_Cloth09_02_Geo_vnBS.PiaoDai_Sine_Geo = $sine_switch;
+
+PiaoDai_Lt_Sine.offset = frame * (pd_con.sineRibbonSpeed + $move_switch);
+PiaoDai_Rt_Sine.offset = frame * (pd_con.sineRibbonSpeed + $move_switch);
+
+PiaoDai_Lt_Sine.amplitude = pd_con.sineRibbonAmplitude * 0.1 + $move_switch * 0.01;
+PiaoDai_Rt_Sine.amplitude = pd_con.sineRibbonAmplitude * 0.1 + $move_switch * 0.01;
+
+PiaoDai_Lt_Sine.wavelength = pd_con.sineRibbonAmplitude * 0.04 + pd_con.sineRibbonWavelength * 0.5 + $move_switch * 0.4;
+PiaoDai_Rt_Sine.wavelength = pd_con.sineRibbonAmplitude * 0.04 + pd_con.sineRibbonWavelength * 0.5 + $move_switch * 0.4;
+
+
+// Wind
+float $wind_power = pd_con.windPower * 2;
+float $state_pos = clamp(0, 10, pd_con.windRibbonState) / 10;
+float $state_neg = clamp(0, 10, -pd_con.windRibbonState) / 10;
+
+// X轴
+float $x_switch = pd_con.translateX / 10;
+piaodaiR_01_fk_ctrl_object_grp.rotateZ  = $x_switch * $wind_power * (1 - $state_pos *  3 / 3.0 - $state_neg * -3 / 3.0);
+piaodaiR_2_fk_ctrl_object_grp.rotateZ   = $x_switch * $wind_power * (1 - $state_pos *  2 / 3.0 - $state_neg * -2 / 3.0);
+piaodaiR_3_fk_ctrl_object_grp.rotateZ   = $x_switch * $wind_power * (1 - $state_pos *  1 / 3.0 - $state_neg * -1 / 3.0);
+piaodaiR_4_fk_ctrl_object_grp.rotateZ   = $x_switch * $wind_power * (1 - $state_pos *  0 / 3.0 - $state_neg *  0 / 3.0);
+piaodaiR_5_fk_ctrl_object_grp.rotateZ   = $x_switch * $wind_power * (1 - $state_pos * -1 / 3.0 - $state_neg *  1 / 3.0);
+piaodaiR_6_fk_ctrl_object_grp.rotateZ   = $x_switch * $wind_power * (1 - $state_pos * -6 / 3.0 - $state_neg *  2 / 3.0);
+piaodaiR_7_fk_ctrl_object_grp.rotateZ   = $x_switch * $wind_power * (1 - $state_pos *  0 / 3.0 - $state_neg *  3 / 3.0);
+
+piaodaiL_01_fk_ctrl_object_grp.rotateZ  = $x_switch * $wind_power * (1 - $state_pos *  3 / 3.0 - $state_neg * -3 / 3.0);
+piaodaiL_2_fk_ctrl_object_grp.rotateZ   = $x_switch * $wind_power * (1 - $state_pos *  2 / 3.0 - $state_neg * -2 / 3.0);
+piaodaiL_3_fk_ctrl_object_grp.rotateZ   = $x_switch * $wind_power * (1 - $state_pos *  1 / 3.0 - $state_neg * -1 / 3.0);
+piaodaiL_4_fk_ctrl_object_grp.rotateZ   = $x_switch * $wind_power * (1 - $state_pos *  0 / 3.0 - $state_neg *  0 / 3.0);
+piaodaiL_5_fk_ctrl_object_grp.rotateZ   = $x_switch * $wind_power * (1 - $state_pos * -1 / 3.0 - $state_neg *  1 / 3.0);
+piaodaiL_6_fk_ctrl_object_grp.rotateZ   = $x_switch * $wind_power * (1 - $state_pos * -6 / 3.0 - $state_neg *  2 / 3.0);
+piaodaiL_7_fk_ctrl_object_grp.rotateZ   = $x_switch * $wind_power * (1 - $state_pos *  0 / 3.0 - $state_neg *  3 / 3.0);
+
+// Z轴
+float $z_switch = pd_con.translateZ / 10;
+piaodaiR_01_fk_ctrl_object_grp.rotateX = -$z_switch * $wind_power * (1 - $state_pos *  3 / 3.0 - $state_neg * -3 / 3.0);
+piaodaiR_2_fk_ctrl_object_grp.rotateX  = -$z_switch * $wind_power * (1 - $state_pos *  2 / 3.0 - $state_neg * -2 / 3.0);
+piaodaiR_3_fk_ctrl_object_grp.rotateX  = -$z_switch * $wind_power * (1 - $state_pos *  1 / 3.0 - $state_neg * -1 / 3.0);
+piaodaiR_4_fk_ctrl_object_grp.rotateX  = -$z_switch * $wind_power * (1 - $state_pos *  0 / 3.0 - $state_neg *  0 / 3.0);
+piaodaiR_5_fk_ctrl_object_grp.rotateX  = -$z_switch * $wind_power * (1 - $state_pos * -1 / 3.0 - $state_neg *  1 / 3.0);
+piaodaiR_6_fk_ctrl_object_grp.rotateX  = -$z_switch * $wind_power * (1 - $state_pos * -6 / 3.0 - $state_neg *  2 / 3.0);
+piaodaiR_7_fk_ctrl_object_grp.rotateX  = -$z_switch * $wind_power * (1 - $state_pos *  0 / 3.0 - $state_neg *  3 / 3.0);
+
+piaodaiL_01_fk_ctrl_object_grp.rotateX = -$z_switch * $wind_power * (1 - $state_pos *  3 / 3.0 - $state_neg * -3 / 3.0);
+piaodaiL_2_fk_ctrl_object_grp.rotateX  = -$z_switch * $wind_power * (1 - $state_pos *  2 / 3.0 - $state_neg * -2 / 3.0);
+piaodaiL_3_fk_ctrl_object_grp.rotateX  = -$z_switch * $wind_power * (1 - $state_pos *  1 / 3.0 - $state_neg * -1 / 3.0);
+piaodaiL_4_fk_ctrl_object_grp.rotateX  = -$z_switch * $wind_power * (1 - $state_pos *  0 / 3.0 - $state_neg *  0 / 3.0);
+piaodaiL_5_fk_ctrl_object_grp.rotateX  = -$z_switch * $wind_power * (1 - $state_pos * -1 / 3.0 - $state_neg *  1 / 3.0);
+piaodaiL_6_fk_ctrl_object_grp.rotateX  = -$z_switch * $wind_power * (1 - $state_pos * -6 / 3.0 - $state_neg *  2 / 3.0);
+piaodaiL_7_fk_ctrl_object_grp.rotateX  = -$z_switch * $wind_power * (1 - $state_pos *  0 / 3.0 - $state_neg *  3 / 3.0);
+
+
+
+
+
+
+
+
+
+
+//Role_Move_Speed_Expr==================================================================================================================================
+// 计算移动速度
+int $current_frame = `currentTime -q`;
+int $prev_frame = `getAttr pd_con.prevFrame`;
+vector $pos_now = `xform -q -ws -t Chest_M`;
+if (abs(abs($current_frame) - abs($prev_frame)) < 2)
+{
+	vector $pos_prev = `getAttr pd_con.prevTranslate`;
+	vector $delta = $pos_now - $pos_prev;
+	float $distance = mag($delta);
+	setAttr pd_con.moveSpeed $distance;
+}
+else
+{
+	setAttr pd_con.moveSpeed 0;
+}
+
+float $prev_x = $pos_now.x;
+float $prev_y = $pos_now.y;
+float $prev_z = $pos_now.z;
+setAttr pd_con.prevTranslate $prev_x $prev_y $prev_z;
+setAttr pd_con.prevFrame $current_frame;
+
+
+
+
+
+
+
+
+
+
+//Skirt_Expr==================================================================================================================================
+// 解算开关
+float $cache_switch = pd_con.cacheSkirtSwitch / 10;
+C_ErLangShen_Mod_Cloth06_03_Geo_vnBS.Cloth_Random = $cache_switch;
+
+
+// Sine
+// 计算移动速度
+float $move_switch = pd_con.moveSpeed / 100.0;
+
+float $sine_switch = pd_con.sineSkirtSwitch / 10.0;
+C_ErLangShen_Mod_Cloth06_03_Geo_vnBS.Qun_Sine_Geo = $sine_switch;
+
+Qun_LF_Sine.offset = frame * (pd_con.sineSkirtSpeed + $move_switch);
+Qun_RF_Sine.offset = frame * (pd_con.sineSkirtSpeed + $move_switch);
+Qun_Lf_Sine.offset = frame * (pd_con.sineSkirtSpeed + $move_switch);
+Qun_Rt_Sine.offset = frame * (pd_con.sineSkirtSpeed + $move_switch);
+Qun_LB_Sine.offset = frame * (pd_con.sineSkirtSpeed + $move_switch);
+Qun_RB_Sine.offset = frame * (pd_con.sineSkirtSpeed + $move_switch);
+
+Qun_LF_Sine.amplitude = pd_con.sineSkirtAmplitude * 0.05 + $move_switch * 0.1;
+Qun_RF_Sine.amplitude = pd_con.sineSkirtAmplitude * 0.05 + $move_switch * 0.1;
+Qun_Lf_Sine.amplitude = pd_con.sineSkirtAmplitude * 0.05 + $move_switch * 0.1;
+Qun_Rt_Sine.amplitude = pd_con.sineSkirtAmplitude * 0.05 + $move_switch * 0.1;
+Qun_LB_Sine.amplitude = pd_con.sineSkirtAmplitude * 0.05 + $move_switch * 0.1;
+Qun_RB_Sine.amplitude = pd_con.sineSkirtAmplitude * 0.05 + $move_switch * 0.1;
+
+Qun_LF_Sine.wavelength = pd_con.sineSkirtAmplitude * 0.02 + pd_con.sineSkirtWavelength * 0.5 + $move_switch * 0.4;
+Qun_RF_Sine.wavelength = pd_con.sineSkirtAmplitude * 0.02 + pd_con.sineSkirtWavelength * 0.5 + $move_switch * 0.4;
+Qun_Lf_Sine.wavelength = pd_con.sineSkirtAmplitude * 0.02 + pd_con.sineSkirtWavelength * 0.5 + $move_switch * 0.4;
+Qun_Rt_Sine.wavelength = pd_con.sineSkirtAmplitude * 0.02 + pd_con.sineSkirtWavelength * 0.5 + $move_switch * 0.4;
+Qun_LB_Sine.wavelength = pd_con.sineSkirtAmplitude * 0.02 + pd_con.sineSkirtWavelength * 0.5 + $move_switch * 0.4;
+Qun_RB_Sine.wavelength = pd_con.sineSkirtAmplitude * 0.02 + pd_con.sineSkirtWavelength * 0.5 + $move_switch * 0.4;
+
+
+// Wind
+float $wind_power = pd_con.windPower * 3;
+float $state_pos = clamp(0, 10, pd_con.windSkirtState) / 10;
+float $state_neg = clamp(0, 10, -pd_con.windSkirtState) / 10;
+
+// X轴
+float $x_switch = pd_con.translateX / 10;
+Mi_Ft_Jia_01_fk_ctrl_object_grp.rotateZ = (0.6 * clamp(0, 1, $x_switch) + -0.6 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 5 / 5 - $state_neg * 1 / 5);
+Mi_Ft_Jia_2_fk_ctrl_object_grp.rotateZ  = (0.6 * clamp(0, 1, $x_switch) + -0.6 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 4 / 5 - $state_neg * 2 / 5);
+Mi_Ft_Jia_3_fk_ctrl_object_grp.rotateZ  = (0.6 * clamp(0, 1, $x_switch) + -0.6 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 3 / 5 - $state_neg * 3 / 5);
+Mi_Ft_Jia_4_fk_ctrl_object_grp.rotateZ  = (0.6 * clamp(0, 1, $x_switch) + -0.6 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 2 / 5 - $state_neg * 4 / 5);
+Mi_Ft_Jia_5_fk_ctrl_object_grp.rotateZ  = (0.6 * clamp(0, 1, $x_switch) + -0.6 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 1 / 5 - $state_neg * 5 / 5);
+
+Mi_Ft_Jia2_01_fk_ctrl_object_grp.rotateZ = (0.6 * clamp(0, 1, $x_switch) + -0.6 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 3 / 3 - $state_neg * 1 / 3);
+Mi_Ft_Jia2_2_fk_ctrl_object_grp.rotateZ  = (0.6 * clamp(0, 1, $x_switch) + -0.6 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 2 / 3 - $state_neg * 2 / 3);
+Mi_Ft_Jia2_3_fk_ctrl_object_grp.rotateZ  = (0.6 * clamp(0, 1, $x_switch) + -0.6 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 1 / 3 - $state_neg * 3 / 3);
+
+Mi_Bk_Jia_01_fk_ctrl_object_grp.rotateZ = (0.6 * clamp(0, 1, $x_switch) + -0.6 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 3 / 3 - $state_neg * 1 / 3);
+Mi_Bk_Jia_2_fk_ctrl_object_grp.rotateZ  = (0.6 * clamp(0, 1, $x_switch) + -0.6 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 2 / 3 - $state_neg * 2 / 3);
+Mi_Bk_Jia_3_fk_ctrl_object_grp.rotateZ  = (0.6 * clamp(0, 1, $x_switch) + -0.6 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 1 / 3 - $state_neg * 3 / 3);
+
+Lf_Ft_Jia_01_fk_ctrl_object_grp.rotateZ = (1.0 * clamp(0, 1, $x_switch) + -(0.37 - 0.024 * pd_con.windPower) * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 6 / 6 - $state_neg * 1 / 6);
+Lf_Ft_Jia_2_fk_ctrl_object_grp.rotateZ  = (1.0 * clamp(0, 1, $x_switch) + -(0.37 - 0.024 * pd_con.windPower) * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 5 / 6 - $state_neg * 2 / 6);
+Lf_Ft_Jia_3_fk_ctrl_object_grp.rotateZ  = (1.0 * clamp(0, 1, $x_switch) + -(0.37 - 0.024 * pd_con.windPower) * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 4 / 6 - $state_neg * 3 / 6);
+Lf_Ft_Jia_4_fk_ctrl_object_grp.rotateZ  = (1.0 * clamp(0, 1, $x_switch) + -(0.37 - 0.024 * pd_con.windPower) * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 3 / 6 - $state_neg * 4 / 6);
+Lf_Ft_Jia_5_fk_ctrl_object_grp.rotateZ  = (1.0 * clamp(0, 1, $x_switch) + -(0.37 - 0.024 * pd_con.windPower) * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 2 / 6 - $state_neg * 5 / 6);
+Lf_Ft_Jia_6_fk_ctrl_object_grp.rotateZ  = (1.0 * clamp(0, 1, $x_switch) + -(0.37 - 0.024 * pd_con.windPower) * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 1 / 6 - $state_neg * 6 / 6);
+
+Rt_Ft_Jia_01_fk_ctrl_object_grp.rotateZ = ((0.37 - 0.024 * pd_con.windPower) * clamp(0, 1, $x_switch) + -1 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 6 / 6 - $state_neg * 1 / 6);
+Rt_Ft_Jia_2_fk_ctrl_object_grp.rotateZ  = ((0.37 - 0.024 * pd_con.windPower) * clamp(0, 1, $x_switch) + -1 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 5 / 6 - $state_neg * 2 / 6);
+Rt_Ft_Jia_3_fk_ctrl_object_grp.rotateZ  = ((0.37 - 0.024 * pd_con.windPower) * clamp(0, 1, $x_switch) + -1 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 4 / 6 - $state_neg * 3 / 6);
+Rt_Ft_Jia_4_fk_ctrl_object_grp.rotateZ  = ((0.37 - 0.024 * pd_con.windPower) * clamp(0, 1, $x_switch) + -1 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 3 / 6 - $state_neg * 4 / 6);
+Rt_Ft_Jia_5_fk_ctrl_object_grp.rotateZ  = ((0.37 - 0.024 * pd_con.windPower) * clamp(0, 1, $x_switch) + -1 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 2 / 6 - $state_neg * 5 / 6);
+Rt_Ft_Jia_6_fk_ctrl_object_grp.rotateZ  = ((0.37 - 0.024 * pd_con.windPower) * clamp(0, 1, $x_switch) + -1 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 1 / 6 - $state_neg * 6 / 6);
+
+Lf_Bk_Jia_01_fk_ctrl_object_grp.rotateZ = (1.0 * clamp(0, 1, $x_switch) + -(0.37 - 0.024 * pd_con.windPower) * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 6 / 6 - $state_neg * 1 / 6);
+Lf_Bk_Jia_2_fk_ctrl_object_grp.rotateZ  = (1.0 * clamp(0, 1, $x_switch) + -(0.37 - 0.024 * pd_con.windPower) * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 5 / 6 - $state_neg * 2 / 6);
+Lf_Bk_Jia_3_fk_ctrl_object_grp.rotateZ  = (1.0 * clamp(0, 1, $x_switch) + -(0.37 - 0.024 * pd_con.windPower) * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 4 / 6 - $state_neg * 3 / 6);
+Lf_Bk_Jia_4_fk_ctrl_object_grp.rotateZ  = (1.0 * clamp(0, 1, $x_switch) + -(0.37 - 0.024 * pd_con.windPower) * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 3 / 6 - $state_neg * 4 / 6);
+Lf_Bk_Jia_5_fk_ctrl_object_grp.rotateZ  = (1.0 * clamp(0, 1, $x_switch) + -(0.37 - 0.024 * pd_con.windPower) * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 2 / 6 - $state_neg * 5 / 6);
+Lf_Bk_Jia_6_fk_ctrl_object_grp.rotateZ  = (1.0 * clamp(0, 1, $x_switch) + -(0.37 - 0.024 * pd_con.windPower) * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 1 / 6 - $state_neg * 6 / 6);
+
+Rt_Bk_Jia_01_fk_ctrl_object_grp.rotateZ = ((0.37 - 0.024 * pd_con.windPower) * clamp(0, 1, $x_switch) + -1 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 6 / 6 - $state_neg * 1 / 6);
+Rt_Bk_Jia_2_fk_ctrl_object_grp.rotateZ  = ((0.37 - 0.024 * pd_con.windPower) * clamp(0, 1, $x_switch) + -1 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 5 / 6 - $state_neg * 2 / 6);
+Rt_Bk_Jia_3_fk_ctrl_object_grp.rotateZ  = ((0.37 - 0.024 * pd_con.windPower) * clamp(0, 1, $x_switch) + -1 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 4 / 6 - $state_neg * 3 / 6);
+Rt_Bk_Jia_4_fk_ctrl_object_grp.rotateZ  = ((0.37 - 0.024 * pd_con.windPower) * clamp(0, 1, $x_switch) + -1 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 3 / 6 - $state_neg * 4 / 6);
+Rt_Bk_Jia_5_fk_ctrl_object_grp.rotateZ  = ((0.37 - 0.024 * pd_con.windPower) * clamp(0, 1, $x_switch) + -1 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 2 / 6 - $state_neg * 6 / 6);
+Rt_Bk_Jia_6_fk_ctrl_object_grp.rotateZ  = ((0.37 - 0.024 * pd_con.windPower) * clamp(0, 1, $x_switch) + -1 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 1 / 6 - $state_neg * 6 / 6);
+
+Lf_Ft_Qun_01_fk_ctrl_object_grp.rotateZ = (0.725 * clamp(0, 1, $x_switch) + -0.475 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 7 / 7 - $state_neg * 1 / 7);
+Lf_Ft_Qun_2_fk_ctrl_object_grp.rotateZ  = (0.725 * clamp(0, 1, $x_switch) + -0.475 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 6 / 7 - $state_neg * 2 / 7);
+Lf_Ft_Qun_3_fk_ctrl_object_grp.rotateZ  = (0.725 * clamp(0, 1, $x_switch) + -0.475 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 5 / 7 - $state_neg * 3 / 7);
+Lf_Ft_Qun_4_fk_ctrl_object_grp.rotateZ  = (0.725 * clamp(0, 1, $x_switch) + -0.475 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 4 / 7 - $state_neg * 4 / 7);
+Lf_Ft_Qun_5_fk_ctrl_object_grp.rotateZ  = (0.725 * clamp(0, 1, $x_switch) + -0.475 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 3 / 7 - $state_neg * 5 / 7);
+Lf_Ft_Qun_6_fk_ctrl_object_grp.rotateZ  = (0.725 * clamp(0, 1, $x_switch) + -0.475 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 2 / 7 - $state_neg * 6 / 7);
+Lf_Ft_Qun_7_fk_ctrl_object_grp.rotateZ  = (0.725 * clamp(0, 1, $x_switch) + -0.475 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 1 / 7 - $state_neg * 7 / 7);
+
+Rt_Ft_Qun_01_fk_ctrl_object_grp.rotateZ = (0.475 * clamp(0, 1, $x_switch) + -0.725 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 7 / 7 - $state_neg * 1 / 7);
+Rt_Ft_Qun_2_fk_ctrl_object_grp.rotateZ  = (0.475 * clamp(0, 1, $x_switch) + -0.725 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 6 / 7 - $state_neg * 2 / 7);
+Rt_Ft_Qun_3_fk_ctrl_object_grp.rotateZ  = (0.475 * clamp(0, 1, $x_switch) + -0.725 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 5 / 7 - $state_neg * 3 / 7);
+Rt_Ft_Qun_4_fk_ctrl_object_grp.rotateZ  = (0.475 * clamp(0, 1, $x_switch) + -0.725 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 4 / 7 - $state_neg * 4 / 7);
+Rt_Ft_Qun_5_fk_ctrl_object_grp.rotateZ  = (0.475 * clamp(0, 1, $x_switch) + -0.725 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 3 / 7 - $state_neg * 5 / 7);
+Rt_Ft_Qun_6_fk_ctrl_object_grp.rotateZ  = (0.475 * clamp(0, 1, $x_switch) + -0.725 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 2 / 7 - $state_neg * 6 / 7);
+Rt_Ft_Qun_7_fk_ctrl_object_grp.rotateZ  = (0.475 * clamp(0, 1, $x_switch) + -0.725 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 1 / 7 - $state_neg * 7 / 7);
+
+Lf_Qun_01_fk_ctrl_object_grp.rotateZ = (1.0 * clamp(0, 1, $x_switch) + -(0.38 - 0.024 * pd_con.windPower) * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 7 / 7 - $state_neg * 1 / 7);
+Lf_Qun_2_fk_ctrl_object_grp.rotateZ  = (1.0 * clamp(0, 1, $x_switch) + -(0.38 - 0.024 * pd_con.windPower) * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 5 / 7 - $state_neg * 2 / 7);
+Lf_Qun_3_fk_ctrl_object_grp.rotateZ  = (1.0 * clamp(0, 1, $x_switch) + -(0.38 - 0.024 * pd_con.windPower) * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 5 / 7 - $state_neg * 3 / 7);
+Lf_Qun_4_fk_ctrl_object_grp.rotateZ  = (1.0 * clamp(0, 1, $x_switch) + -(0.38 - 0.024 * pd_con.windPower) * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 4 / 7 - $state_neg * 4 / 7);
+Lf_Qun_5_fk_ctrl_object_grp.rotateZ  = (1.0 * clamp(0, 1, $x_switch) + -(0.38 - 0.024 * pd_con.windPower) * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 3 / 7 - $state_neg * 5 / 7);
+Lf_Qun_6_fk_ctrl_object_grp.rotateZ  = (1.0 * clamp(0, 1, $x_switch) + -(0.38 - 0.024 * pd_con.windPower) * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 2 / 7 - $state_neg * 6 / 7);
+Lf_Qun_7_fk_ctrl_object_grp.rotateZ  = (1.0 * clamp(0, 1, $x_switch) + -(0.38 - 0.024 * pd_con.windPower) * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 1 / 7 - $state_neg * 7 / 7);
+
+Rt_Qun_01_fk_ctrl_object_grp.rotateZ = ((0.38 - 0.024 * pd_con.windPower) * clamp(0, 1, $x_switch) + -1 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 7 / 7 - $state_neg * 1 / 7);
+Rt_Qun_2_fk_ctrl_object_grp.rotateZ  = ((0.38 - 0.024 * pd_con.windPower) * clamp(0, 1, $x_switch) + -1 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 6 / 7 - $state_neg * 2 / 7);
+Rt_Qun_3_fk_ctrl_object_grp.rotateZ  = ((0.38 - 0.024 * pd_con.windPower) * clamp(0, 1, $x_switch) + -1 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 5 / 7 - $state_neg * 3 / 7);
+Rt_Qun_4_fk_ctrl_object_grp.rotateZ  = ((0.38 - 0.024 * pd_con.windPower) * clamp(0, 1, $x_switch) + -1 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 4 / 7 - $state_neg * 4 / 7);
+Rt_Qun_5_fk_ctrl_object_grp.rotateZ  = ((0.38 - 0.024 * pd_con.windPower) * clamp(0, 1, $x_switch) + -1 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 3 / 7 - $state_neg * 5 / 7);
+Rt_Qun_6_fk_ctrl_object_grp.rotateZ  = ((0.38 - 0.024 * pd_con.windPower) * clamp(0, 1, $x_switch) + -1 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 2 / 7 - $state_neg * 6 / 7);
+Rt_Qun_7_fk_ctrl_object_grp.rotateZ  = ((0.38 - 0.024 * pd_con.windPower) * clamp(0, 1, $x_switch) + -1 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 1 / 7 - $state_neg * 7 / 7);
+
+Lf_Bk_Qun_01_fk_ctrl_object_grp.rotateZ = (0.725 * clamp(0, 1, $x_switch) + -0.475 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 7 / 7 - $state_neg * 1 / 7);
+Lf_Bk_Qun_2_fk_ctrl_object_grp.rotateZ  = (0.725 * clamp(0, 1, $x_switch) + -0.475 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 6 / 7 - $state_neg * 2 / 7);
+Lf_Bk_Qun_3_fk_ctrl_object_grp.rotateZ  = (0.725 * clamp(0, 1, $x_switch) + -0.475 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 5 / 7 - $state_neg * 3 / 7);
+Lf_Bk_Qun_4_fk_ctrl_object_grp.rotateZ  = (0.725 * clamp(0, 1, $x_switch) + -0.475 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 4 / 7 - $state_neg * 4 / 7);
+Lf_Bk_Qun_5_fk_ctrl_object_grp.rotateZ  = (0.725 * clamp(0, 1, $x_switch) + -0.475 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 3 / 7 - $state_neg * 5 / 7);
+Lf_Bk_Qun_6_fk_ctrl_object_grp.rotateZ  = (0.725 * clamp(0, 1, $x_switch) + -0.475 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 2 / 7 - $state_neg * 6 / 7);
+Lf_Bk_Qun_7_fk_ctrl_object_grp.rotateZ  = (0.725 * clamp(0, 1, $x_switch) + -0.475 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 1 / 7 - $state_neg * 7 / 7);
+
+Rt_Bk_Qun_01_fk_ctrl_object_grp.rotateZ = (0.475 * clamp(0, 1, $x_switch) + -0.725 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 7 / 7 - $state_neg * 1 / 7);
+Rt_Bk_Qun_2_fk_ctrl_object_grp.rotateZ  = (0.475 * clamp(0, 1, $x_switch) + -0.725 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 6 / 7 - $state_neg * 2 / 7);
+Rt_Bk_Qun_3_fk_ctrl_object_grp.rotateZ  = (0.475 * clamp(0, 1, $x_switch) + -0.725 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 5 / 7 - $state_neg * 3 / 7);
+Rt_Bk_Qun_4_fk_ctrl_object_grp.rotateZ  = (0.475 * clamp(0, 1, $x_switch) + -0.725 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 4 / 7 - $state_neg * 4 / 7);
+Rt_Bk_Qun_5_fk_ctrl_object_grp.rotateZ  = (0.475 * clamp(0, 1, $x_switch) + -0.725 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 3 / 7 - $state_neg * 5 / 7);
+Rt_Bk_Qun_6_fk_ctrl_object_grp.rotateZ  = (0.475 * clamp(0, 1, $x_switch) + -0.725 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 2 / 7 - $state_neg * 6 / 7);
+Rt_Bk_Qun_7_fk_ctrl_object_grp.rotateZ  = (0.475 * clamp(0, 1, $x_switch) + -0.725 * clamp(0, 1, -$x_switch)) * $wind_power * (1 - $state_pos * 1 / 7 - $state_neg * 7 / 7);
+
+// Z轴
+float $z_switch = pd_con.translateZ / 10;
+Mi_Ft_Jia_01_fk_ctrl_object_grp.rotateX = (0.4 - 0.02 * pd_con.windPower) * -$z_switch * $wind_power * (1 - $state_pos * 5 / 5 - $state_neg * 1 / 5);
+Mi_Ft_Jia_2_fk_ctrl_object_grp.rotateX  = (0.4 - 0.02 * pd_con.windPower) * -$z_switch * $wind_power * (1 - $state_pos * 4 / 5 - $state_neg * 2 / 5);
+Mi_Ft_Jia_3_fk_ctrl_object_grp.rotateX  = (0.4 - 0.02 * pd_con.windPower) * -$z_switch * $wind_power * (1 - $state_pos * 3 / 5 - $state_neg * 3 / 5);
+Mi_Ft_Jia_4_fk_ctrl_object_grp.rotateX  = (0.4 - 0.02 * pd_con.windPower) * -$z_switch * $wind_power * (1 - $state_pos * 2 / 5 - $state_neg * 4 / 5);
+Mi_Ft_Jia_5_fk_ctrl_object_grp.rotateX  = (0.4 - 0.02 * pd_con.windPower) * -$z_switch * $wind_power * (1 - $state_pos * 1 / 5 - $state_neg * 5 / 5);
+
+Mi_Ft_Jia2_01_fk_ctrl_object_grp.rotateX = (0.4 - 0.02 * pd_con.windPower) * -$z_switch * $wind_power * (1 - $state_pos * 3 / 3 - $state_neg * 1 / 3);
+Mi_Ft_Jia2_2_fk_ctrl_object_grp.rotateX  = (0.4 - 0.02 * pd_con.windPower) * -$z_switch * $wind_power * (1 - $state_pos * 2 / 3 - $state_neg * 2 / 3);
+Mi_Ft_Jia2_3_fk_ctrl_object_grp.rotateX  = (0.4 - 0.02 * pd_con.windPower) * -$z_switch * $wind_power * (1 - $state_pos * 1 / 3 - $state_neg * 3 / 3);
+
+Mi_Bk_Jia_01_fk_ctrl_object_grp.rotateX = -$z_switch * $wind_power * (1 - $state_pos * 3 / 3 - $state_neg * 1 / 3);
+Mi_Bk_Jia_2_fk_ctrl_object_grp.rotateX  = -$z_switch * $wind_power * (1 - $state_pos * 2 / 3 - $state_neg * 2 / 3);
+Mi_Bk_Jia_3_fk_ctrl_object_grp.rotateX  = -$z_switch * $wind_power * (1 - $state_pos * 1 / 3 - $state_neg * 3 / 3);
+
+Lf_Ft_Jia_01_fk_ctrl_object_grp.rotateX = (0.2 - 0.012 * pd_con.windPower) * -$z_switch * $wind_power * (1 - $state_pos * 6 / 6 - $state_neg * 1 / 6);
+Lf_Ft_Jia_2_fk_ctrl_object_grp.rotateX  = (0.2 - 0.012 * pd_con.windPower) * -$z_switch * $wind_power * (1 - $state_pos * 5 / 6 - $state_neg * 2 / 6);
+Lf_Ft_Jia_3_fk_ctrl_object_grp.rotateX  = (0.2 - 0.012 * pd_con.windPower) * -$z_switch * $wind_power * (1 - $state_pos * 4 / 6 - $state_neg * 3 / 6);
+Lf_Ft_Jia_4_fk_ctrl_object_grp.rotateX  = (0.2 - 0.012 * pd_con.windPower) * -$z_switch * $wind_power * (1 - $state_pos * 3 / 6 - $state_neg * 4 / 6);
+Lf_Ft_Jia_5_fk_ctrl_object_grp.rotateX  = (0.2 - 0.012 * pd_con.windPower) * -$z_switch * $wind_power * (1 - $state_pos * 2 / 6 - $state_neg * 5 / 6);
+Lf_Ft_Jia_6_fk_ctrl_object_grp.rotateX  = (0.2 - 0.012 * pd_con.windPower) * -$z_switch * $wind_power * (1 - $state_pos * 1 / 6 - $state_neg * 6 / 6);
+
+Rt_Ft_Jia_01_fk_ctrl_object_grp.rotateX = (0.2 - 0.012 * pd_con.windPower) * -$z_switch * $wind_power * (1 - $state_pos * 6 / 6 - $state_neg * 1 / 6);
+Rt_Ft_Jia_2_fk_ctrl_object_grp.rotateX  = (0.2 - 0.012 * pd_con.windPower) * -$z_switch * $wind_power * (1 - $state_pos * 5 / 6 - $state_neg * 2 / 6);
+Rt_Ft_Jia_3_fk_ctrl_object_grp.rotateX  = (0.2 - 0.012 * pd_con.windPower) * -$z_switch * $wind_power * (1 - $state_pos * 4 / 6 - $state_neg * 3 / 6);
+Rt_Ft_Jia_4_fk_ctrl_object_grp.rotateX  = (0.2 - 0.012 * pd_con.windPower) * -$z_switch * $wind_power * (1 - $state_pos * 3 / 6 - $state_neg * 4 / 6);
+Rt_Ft_Jia_5_fk_ctrl_object_grp.rotateX  = (0.2 - 0.012 * pd_con.windPower) * -$z_switch * $wind_power * (1 - $state_pos * 2 / 6 - $state_neg * 5 / 6);
+Rt_Ft_Jia_6_fk_ctrl_object_grp.rotateX  = (0.2 - 0.012 * pd_con.windPower) * -$z_switch * $wind_power * (1 - $state_pos * 1 / 6 - $state_neg * 6 / 6);
+
+Lf_Bk_Jia_01_fk_ctrl_object_grp.rotateX = -$z_switch * $wind_power * (1 - $state_pos * 6 / 6 - $state_neg * 1 / 6);
+Lf_Bk_Jia_2_fk_ctrl_object_grp.rotateX  = -$z_switch * $wind_power * (1 - $state_pos * 5 / 6 - $state_neg * 2 / 6);
+Lf_Bk_Jia_3_fk_ctrl_object_grp.rotateX  = -$z_switch * $wind_power * (1 - $state_pos * 4 / 6 - $state_neg * 3 / 6);
+Lf_Bk_Jia_4_fk_ctrl_object_grp.rotateX  = -$z_switch * $wind_power * (1 - $state_pos * 3 / 6 - $state_neg * 4 / 6);
+Lf_Bk_Jia_5_fk_ctrl_object_grp.rotateX  = -$z_switch * $wind_power * (1 - $state_pos * 2 / 6 - $state_neg * 5 / 6);
+Lf_Bk_Jia_6_fk_ctrl_object_grp.rotateX  = -$z_switch * $wind_power * (1 - $state_pos * 1 / 6 - $state_neg * 6 / 6);
+
+Rt_Bk_Jia_01_fk_ctrl_object_grp.rotateX = -$z_switch * $wind_power * (1 - $state_pos * 6 / 6 - $state_neg * 1 / 6);
+Rt_Bk_Jia_2_fk_ctrl_object_grp.rotateX  = -$z_switch * $wind_power * (1 - $state_pos * 5 / 6 - $state_neg * 2 / 6);
+Rt_Bk_Jia_3_fk_ctrl_object_grp.rotateX  = -$z_switch * $wind_power * (1 - $state_pos * 4 / 6 - $state_neg * 3 / 6);
+Rt_Bk_Jia_4_fk_ctrl_object_grp.rotateX  = -$z_switch * $wind_power * (1 - $state_pos * 3 / 6 - $state_neg * 4 / 6);
+Rt_Bk_Jia_5_fk_ctrl_object_grp.rotateX  = -$z_switch * $wind_power * (1 - $state_pos * 2 / 6 - $state_neg * 5 / 6);
+Rt_Bk_Jia_6_fk_ctrl_object_grp.rotateX  = -$z_switch * $wind_power * (1 - $state_pos * 1 / 6 - $state_neg * 6 / 6);
+
+Lf_Ft_Qun_01_fk_ctrl_object_grp.rotateX = (0.25 - 0.016 * pd_con.windPower) * -$z_switch * $wind_power * (1 - $state_pos * 7 / 7 - $state_neg * 1 / 7);
+Lf_Ft_Qun_2_fk_ctrl_object_grp.rotateX  = (0.25 - 0.016 * pd_con.windPower) * -$z_switch * $wind_power * (1 - $state_pos * 6 / 7 - $state_neg * 2 / 7);
+Lf_Ft_Qun_3_fk_ctrl_object_grp.rotateX  = (0.25 - 0.016 * pd_con.windPower) * -$z_switch * $wind_power * (1 - $state_pos * 5 / 7 - $state_neg * 3 / 7);
+Lf_Ft_Qun_4_fk_ctrl_object_grp.rotateX  = (0.25 - 0.016 * pd_con.windPower) * -$z_switch * $wind_power * (1 - $state_pos * 4 / 7 - $state_neg * 4 / 7);
+Lf_Ft_Qun_5_fk_ctrl_object_grp.rotateX  = (0.25 - 0.016 * pd_con.windPower) * -$z_switch * $wind_power * (1 - $state_pos * 3 / 7 - $state_neg * 5 / 7);
+Lf_Ft_Qun_6_fk_ctrl_object_grp.rotateX  = (0.25 - 0.016 * pd_con.windPower) * -$z_switch * $wind_power * (1 - $state_pos * 2 / 7 - $state_neg * 6 / 7);
+Lf_Ft_Qun_7_fk_ctrl_object_grp.rotateX  = (0.25 - 0.016 * pd_con.windPower) * -$z_switch * $wind_power * (1 - $state_pos * 1 / 7 - $state_neg * 7 / 7);
+
+Rt_Ft_Qun_01_fk_ctrl_object_grp.rotateX = (0.25 - 0.016 * pd_con.windPower) * -$z_switch * $wind_power * (1 - $state_pos * 7 / 7 - $state_neg * 1 / 7);
+Rt_Ft_Qun_2_fk_ctrl_object_grp.rotateX  = (0.25 - 0.016 * pd_con.windPower) * -$z_switch * $wind_power * (1 - $state_pos * 6 / 7 - $state_neg * 2 / 7);
+Rt_Ft_Qun_3_fk_ctrl_object_grp.rotateX  = (0.25 - 0.016 * pd_con.windPower) * -$z_switch * $wind_power * (1 - $state_pos * 5 / 7 - $state_neg * 3 / 7);
+Rt_Ft_Qun_4_fk_ctrl_object_grp.rotateX  = (0.25 - 0.016 * pd_con.windPower) * -$z_switch * $wind_power * (1 - $state_pos * 4 / 7 - $state_neg * 4 / 7);
+Rt_Ft_Qun_5_fk_ctrl_object_grp.rotateX  = (0.25 - 0.016 * pd_con.windPower) * -$z_switch * $wind_power * (1 - $state_pos * 3 / 7 - $state_neg * 5 / 7);
+Rt_Ft_Qun_6_fk_ctrl_object_grp.rotateX  = (0.25 - 0.016 * pd_con.windPower) * -$z_switch * $wind_power * (1 - $state_pos * 2 / 7 - $state_neg * 6 / 7);
+Rt_Ft_Qun_7_fk_ctrl_object_grp.rotateX  = (0.25 - 0.016 * pd_con.windPower) * -$z_switch * $wind_power * (1 - $state_pos * 1 / 7 - $state_neg * 7 / 7);
+
+Lf_Qun_01_fk_ctrl_object_grp.rotateX = 0.5 * -$z_switch * $wind_power * (1 - $state_pos * 7 / 7 - $state_neg * 1 / 7);
+Lf_Qun_2_fk_ctrl_object_grp.rotateX  = 0.5 * -$z_switch * $wind_power * (1 - $state_pos * 6 / 7 - $state_neg * 2 / 7);
+Lf_Qun_3_fk_ctrl_object_grp.rotateX  = 0.5 * -$z_switch * $wind_power * (1 - $state_pos * 5 / 7 - $state_neg * 3 / 7);
+Lf_Qun_4_fk_ctrl_object_grp.rotateX  = 0.5 * -$z_switch * $wind_power * (1 - $state_pos * 4 / 7 - $state_neg * 4 / 7);
+Lf_Qun_5_fk_ctrl_object_grp.rotateX  = 0.5 * -$z_switch * $wind_power * (1 - $state_pos * 3 / 7 - $state_neg * 5 / 7);
+Lf_Qun_6_fk_ctrl_object_grp.rotateX  = 0.5 * -$z_switch * $wind_power * (1 - $state_pos * 2 / 7 - $state_neg * 6 / 7);
+Lf_Qun_7_fk_ctrl_object_grp.rotateX  = 0.5 * -$z_switch * $wind_power * (1 - $state_pos * 1 / 7 - $state_neg * 7 / 7);
+
+Rt_Qun_01_fk_ctrl_object_grp.rotateX = 0.5 * -$z_switch * $wind_power * (1 - $state_pos * 7 / 7 - $state_neg * 1 / 7);
+Rt_Qun_2_fk_ctrl_object_grp.rotateX  = 0.5 * -$z_switch * $wind_power * (1 - $state_pos * 6 / 7 - $state_neg * 2 / 7);
+Rt_Qun_3_fk_ctrl_object_grp.rotateX  = 0.5 * -$z_switch * $wind_power * (1 - $state_pos * 5 / 7 - $state_neg * 3 / 7);
+Rt_Qun_4_fk_ctrl_object_grp.rotateX  = 0.5 * -$z_switch * $wind_power * (1 - $state_pos * 4 / 7 - $state_neg * 4 / 7);
+Rt_Qun_5_fk_ctrl_object_grp.rotateX  = 0.5 * -$z_switch * $wind_power * (1 - $state_pos * 3 / 7 - $state_neg * 5 / 7);
+Rt_Qun_6_fk_ctrl_object_grp.rotateX  = 0.5 * -$z_switch * $wind_power * (1 - $state_pos * 2 / 7 - $state_neg * 6 / 7);
+Rt_Qun_7_fk_ctrl_object_grp.rotateX  = 0.5 * -$z_switch * $wind_power * (1 - $state_pos * 1 / 7 - $state_neg * 7 / 7);
+
+Lf_Bk_Qun_01_fk_ctrl_object_grp.rotateX = -$z_switch * $wind_power * (1 - $state_pos * 7 / 7 - $state_neg * 1 / 7);
+Lf_Bk_Qun_2_fk_ctrl_object_grp.rotateX  = -$z_switch * $wind_power * (1 - $state_pos * 6 / 7 - $state_neg * 2 / 7);
+Lf_Bk_Qun_3_fk_ctrl_object_grp.rotateX  = -$z_switch * $wind_power * (1 - $state_pos * 5 / 7 - $state_neg * 3 / 7);
+Lf_Bk_Qun_4_fk_ctrl_object_grp.rotateX  = -$z_switch * $wind_power * (1 - $state_pos * 4 / 7 - $state_neg * 4 / 7);
+Lf_Bk_Qun_5_fk_ctrl_object_grp.rotateX  = -$z_switch * $wind_power * (1 - $state_pos * 3 / 7 - $state_neg * 5 / 7);
+Lf_Bk_Qun_6_fk_ctrl_object_grp.rotateX  = -$z_switch * $wind_power * (1 - $state_pos * 2 / 7 - $state_neg * 6 / 7);
+Lf_Bk_Qun_7_fk_ctrl_object_grp.rotateX  = -$z_switch * $wind_power * (1 - $state_pos * 1 / 7 - $state_neg * 7 / 7);
+
+Rt_Bk_Qun_01_fk_ctrl_object_grp.rotateX = -$z_switch * $wind_power * (1 - $state_pos * 7 / 7 - $state_neg * 1 / 7);
+Rt_Bk_Qun_2_fk_ctrl_object_grp.rotateX  = -$z_switch * $wind_power * (1 - $state_pos * 6 / 7 - $state_neg * 2 / 7);
+Rt_Bk_Qun_3_fk_ctrl_object_grp.rotateX  = -$z_switch * $wind_power * (1 - $state_pos * 5 / 7 - $state_neg * 3 / 7);
+Rt_Bk_Qun_4_fk_ctrl_object_grp.rotateX  = -$z_switch * $wind_power * (1 - $state_pos * 4 / 7 - $state_neg * 4 / 7);
+Rt_Bk_Qun_5_fk_ctrl_object_grp.rotateX  = -$z_switch * $wind_power * (1 - $state_pos * 3 / 7 - $state_neg * 5 / 7);
+Rt_Bk_Qun_6_fk_ctrl_object_grp.rotateX  = -$z_switch * $wind_power * (1 - $state_pos * 2 / 7 - $state_neg * 6 / 7);
+Rt_Bk_Qun_7_fk_ctrl_object_grp.rotateX  = -$z_switch * $wind_power * (1 - $state_pos * 1 / 7 - $state_neg * 7 / 7);
+
+
+
+
+
+
+
+
+
+//Spring_Magic_Expr==================================================================================================================================
+float $switch_jia_mi_ft = pd_con.springArmorMiFt2Switch / 10;
+Mi_Ft_Jia2_01_fk_ctrl_con.rotateX = $switch_jia_mi_ft * Mi_Ft_Jia2_01_fk_ctrl_con_spring.rotateX;
+Mi_Ft_Jia2_01_fk_ctrl_con.rotateY = $switch_jia_mi_ft * Mi_Ft_Jia2_01_fk_ctrl_con_spring.rotateY;
+Mi_Ft_Jia2_01_fk_ctrl_con.rotateZ = $switch_jia_mi_ft * Mi_Ft_Jia2_01_fk_ctrl_con_spring.rotateZ;
+Mi_Ft_Jia2_2_fk_ctrl_con.rotateX = $switch_jia_mi_ft * Mi_Ft_Jia2_2_fk_ctrl_con_spring.rotateX;
+Mi_Ft_Jia2_2_fk_ctrl_con.rotateY = $switch_jia_mi_ft * Mi_Ft_Jia2_2_fk_ctrl_con_spring.rotateY;
+Mi_Ft_Jia2_2_fk_ctrl_con.rotateZ = $switch_jia_mi_ft * Mi_Ft_Jia2_2_fk_ctrl_con_spring.rotateZ;
+Mi_Ft_Jia2_3_fk_ctrl_con.rotateX = $switch_jia_mi_ft * Mi_Ft_Jia2_3_fk_ctrl_con_spring.rotateX;
+Mi_Ft_Jia2_3_fk_ctrl_con.rotateY = $switch_jia_mi_ft * Mi_Ft_Jia2_3_fk_ctrl_con_spring.rotateY;
+Mi_Ft_Jia2_3_fk_ctrl_con.rotateZ = $switch_jia_mi_ft * Mi_Ft_Jia2_3_fk_ctrl_con_spring.rotateZ;
+
+float $switch_jia2_mi_ft = pd_con.springArmorMiFtSwitch / 10;
+Mi_Ft_Jia_01_fk_ctrl_con.rotateX = $switch_jia2_mi_ft * Mi_Ft_Jia_01_fk_ctrl_con_spring.rotateX;
+Mi_Ft_Jia_01_fk_ctrl_con.rotateY = $switch_jia2_mi_ft * Mi_Ft_Jia_01_fk_ctrl_con_spring.rotateY;
+Mi_Ft_Jia_01_fk_ctrl_con.rotateZ = $switch_jia2_mi_ft * Mi_Ft_Jia_01_fk_ctrl_con_spring.rotateZ;
+Mi_Ft_Jia_2_fk_ctrl_con.rotateX = $switch_jia2_mi_ft * Mi_Ft_Jia_2_fk_ctrl_con_spring.rotateX;
+Mi_Ft_Jia_2_fk_ctrl_con.rotateY = $switch_jia2_mi_ft * Mi_Ft_Jia_2_fk_ctrl_con_spring.rotateY;
+Mi_Ft_Jia_2_fk_ctrl_con.rotateZ = $switch_jia2_mi_ft * Mi_Ft_Jia_2_fk_ctrl_con_spring.rotateZ;
+Mi_Ft_Jia_3_fk_ctrl_con.rotateX = $switch_jia2_mi_ft * Mi_Ft_Jia_3_fk_ctrl_con_spring.rotateX;
+Mi_Ft_Jia_3_fk_ctrl_con.rotateY = $switch_jia2_mi_ft * Mi_Ft_Jia_3_fk_ctrl_con_spring.rotateY;
+Mi_Ft_Jia_3_fk_ctrl_con.rotateZ = $switch_jia2_mi_ft * Mi_Ft_Jia_3_fk_ctrl_con_spring.rotateZ;
+Mi_Ft_Jia_4_fk_ctrl_con.rotateX = $switch_jia2_mi_ft * Mi_Ft_Jia_4_fk_ctrl_con_spring.rotateX;
+Mi_Ft_Jia_4_fk_ctrl_con.rotateY = $switch_jia2_mi_ft * Mi_Ft_Jia_4_fk_ctrl_con_spring.rotateY;
+Mi_Ft_Jia_4_fk_ctrl_con.rotateZ = $switch_jia2_mi_ft * Mi_Ft_Jia_4_fk_ctrl_con_spring.rotateZ;
+Mi_Ft_Jia_5_fk_ctrl_con.rotateX = $switch_jia2_mi_ft * Mi_Ft_Jia_5_fk_ctrl_con_spring.rotateX;
+Mi_Ft_Jia_5_fk_ctrl_con.rotateY = $switch_jia2_mi_ft * Mi_Ft_Jia_5_fk_ctrl_con_spring.rotateY;
+Mi_Ft_Jia_5_fk_ctrl_con.rotateZ = $switch_jia2_mi_ft * Mi_Ft_Jia_5_fk_ctrl_con_spring.rotateZ;
+
+float $switch_jia_mi_bk = pd_con.springArmorMiBkSwitch / 10;
+Mi_Bk_Jia_01_fk_ctrl_con.rotateX = $switch_jia_mi_bk * Mi_Bk_Jia_01_fk_ctrl_con_spring.rotateX;
+Mi_Bk_Jia_01_fk_ctrl_con.rotateY = $switch_jia_mi_bk * Mi_Bk_Jia_01_fk_ctrl_con_spring.rotateY;
+Mi_Bk_Jia_01_fk_ctrl_con.rotateZ = $switch_jia_mi_bk * Mi_Bk_Jia_01_fk_ctrl_con_spring.rotateZ;
+Mi_Bk_Jia_2_fk_ctrl_con.rotateX = $switch_jia_mi_bk * Mi_Bk_Jia_2_fk_ctrl_con_spring.rotateX;
+Mi_Bk_Jia_2_fk_ctrl_con.rotateY = $switch_jia_mi_bk * Mi_Bk_Jia_2_fk_ctrl_con_spring.rotateY;
+Mi_Bk_Jia_2_fk_ctrl_con.rotateZ = $switch_jia_mi_bk * Mi_Bk_Jia_2_fk_ctrl_con_spring.rotateZ;
+Mi_Bk_Jia_3_fk_ctrl_con.rotateX = $switch_jia_mi_bk * Mi_Bk_Jia_3_fk_ctrl_con_spring.rotateX;
+Mi_Bk_Jia_3_fk_ctrl_con.rotateY = $switch_jia_mi_bk * Mi_Bk_Jia_3_fk_ctrl_con_spring.rotateY;
+Mi_Bk_Jia_3_fk_ctrl_con.rotateZ = $switch_jia_mi_bk * Mi_Bk_Jia_3_fk_ctrl_con_spring.rotateZ;
+
+float $switch_jia_lf_ft = pd_con.springArmorLfFtSwitch / 10;
+Lf_Ft_Jia_01_fk_ctrl_con.rotateX = $switch_jia_lf_ft * Lf_Ft_Jia_01_fk_ctrl_con_spring.rotateX;
+Lf_Ft_Jia_01_fk_ctrl_con.rotateY = $switch_jia_lf_ft * Lf_Ft_Jia_01_fk_ctrl_con_spring.rotateY;
+Lf_Ft_Jia_01_fk_ctrl_con.rotateZ = $switch_jia_lf_ft * Lf_Ft_Jia_01_fk_ctrl_con_spring.rotateZ;
+Lf_Ft_Jia_2_fk_ctrl_con.rotateX = $switch_jia_lf_ft * Lf_Ft_Jia_2_fk_ctrl_con_spring.rotateX;
+Lf_Ft_Jia_2_fk_ctrl_con.rotateY = $switch_jia_lf_ft * Lf_Ft_Jia_2_fk_ctrl_con_spring.rotateY;
+Lf_Ft_Jia_2_fk_ctrl_con.rotateZ = $switch_jia_lf_ft * Lf_Ft_Jia_2_fk_ctrl_con_spring.rotateZ;
+Lf_Ft_Jia_3_fk_ctrl_con.rotateX = $switch_jia_lf_ft * Lf_Ft_Jia_3_fk_ctrl_con_spring.rotateX;
+Lf_Ft_Jia_3_fk_ctrl_con.rotateY = $switch_jia_lf_ft * Lf_Ft_Jia_3_fk_ctrl_con_spring.rotateY;
+Lf_Ft_Jia_3_fk_ctrl_con.rotateZ = $switch_jia_lf_ft * Lf_Ft_Jia_3_fk_ctrl_con_spring.rotateZ;
+Lf_Ft_Jia_4_fk_ctrl_con.rotateX = $switch_jia_lf_ft * Lf_Ft_Jia_4_fk_ctrl_con_spring.rotateX;
+Lf_Ft_Jia_4_fk_ctrl_con.rotateY = $switch_jia_lf_ft * Lf_Ft_Jia_4_fk_ctrl_con_spring.rotateY;
+Lf_Ft_Jia_4_fk_ctrl_con.rotateZ = $switch_jia_lf_ft * Lf_Ft_Jia_4_fk_ctrl_con_spring.rotateZ;
+Lf_Ft_Jia_5_fk_ctrl_con.rotateX = $switch_jia_lf_ft * Lf_Ft_Jia_5_fk_ctrl_con_spring.rotateX;
+Lf_Ft_Jia_5_fk_ctrl_con.rotateY = $switch_jia_lf_ft * Lf_Ft_Jia_5_fk_ctrl_con_spring.rotateY;
+Lf_Ft_Jia_5_fk_ctrl_con.rotateZ = $switch_jia_lf_ft * Lf_Ft_Jia_5_fk_ctrl_con_spring.rotateZ;
+Lf_Ft_Jia_6_fk_ctrl_con.rotateX = $switch_jia_lf_ft * Lf_Ft_Jia_6_fk_ctrl_con_spring.rotateX;
+Lf_Ft_Jia_6_fk_ctrl_con.rotateY = $switch_jia_lf_ft * Lf_Ft_Jia_6_fk_ctrl_con_spring.rotateY;
+Lf_Ft_Jia_6_fk_ctrl_con.rotateZ = $switch_jia_lf_ft * Lf_Ft_Jia_6_fk_ctrl_con_spring.rotateZ;
+
+float $switch_jia_rt_ft = pd_con.springArmorRtFtSwitch / 10;
+Rt_Ft_Jia_01_fk_ctrl_con.rotateX = $switch_jia_rt_ft * Rt_Ft_Jia_01_fk_ctrl_con_spring.rotateX;
+Rt_Ft_Jia_01_fk_ctrl_con.rotateY = $switch_jia_rt_ft * Rt_Ft_Jia_01_fk_ctrl_con_spring.rotateY;
+Rt_Ft_Jia_01_fk_ctrl_con.rotateZ = $switch_jia_rt_ft * Rt_Ft_Jia_01_fk_ctrl_con_spring.rotateZ;
+Rt_Ft_Jia_2_fk_ctrl_con.rotateX = $switch_jia_rt_ft * Rt_Ft_Jia_2_fk_ctrl_con_spring.rotateX;
+Rt_Ft_Jia_2_fk_ctrl_con.rotateY = $switch_jia_rt_ft * Rt_Ft_Jia_2_fk_ctrl_con_spring.rotateY;
+Rt_Ft_Jia_2_fk_ctrl_con.rotateZ = $switch_jia_rt_ft * Rt_Ft_Jia_2_fk_ctrl_con_spring.rotateZ;
+Rt_Ft_Jia_3_fk_ctrl_con.rotateX = $switch_jia_rt_ft * Rt_Ft_Jia_3_fk_ctrl_con_spring.rotateX;
+Rt_Ft_Jia_3_fk_ctrl_con.rotateY = $switch_jia_rt_ft * Rt_Ft_Jia_3_fk_ctrl_con_spring.rotateY;
+Rt_Ft_Jia_3_fk_ctrl_con.rotateZ = $switch_jia_rt_ft * Rt_Ft_Jia_3_fk_ctrl_con_spring.rotateZ;
+Rt_Ft_Jia_4_fk_ctrl_con.rotateX = $switch_jia_rt_ft * Rt_Ft_Jia_4_fk_ctrl_con_spring.rotateX;
+Rt_Ft_Jia_4_fk_ctrl_con.rotateY = $switch_jia_rt_ft * Rt_Ft_Jia_4_fk_ctrl_con_spring.rotateY;
+Rt_Ft_Jia_4_fk_ctrl_con.rotateZ = $switch_jia_rt_ft * Rt_Ft_Jia_4_fk_ctrl_con_spring.rotateZ;
+Rt_Ft_Jia_5_fk_ctrl_con.rotateX = $switch_jia_rt_ft * Rt_Ft_Jia_5_fk_ctrl_con_spring.rotateX;
+Rt_Ft_Jia_5_fk_ctrl_con.rotateY = $switch_jia_rt_ft * Rt_Ft_Jia_5_fk_ctrl_con_spring.rotateY;
+Rt_Ft_Jia_5_fk_ctrl_con.rotateZ = $switch_jia_rt_ft * Rt_Ft_Jia_5_fk_ctrl_con_spring.rotateZ;
+Rt_Ft_Jia_6_fk_ctrl_con.rotateX = $switch_jia_rt_ft * Rt_Ft_Jia_6_fk_ctrl_con_spring.rotateX;
+Rt_Ft_Jia_6_fk_ctrl_con.rotateY = $switch_jia_rt_ft * Rt_Ft_Jia_6_fk_ctrl_con_spring.rotateY;
+Rt_Ft_Jia_6_fk_ctrl_con.rotateZ = $switch_jia_rt_ft * Rt_Ft_Jia_6_fk_ctrl_con_spring.rotateZ;
+
+float $switch_jia_lf_bk = pd_con.springArmorLfBkSwitch / 10;
+Lf_Bk_Jia_01_fk_ctrl_con.rotateX = $switch_jia_lf_bk * Lf_Bk_Jia_01_fk_ctrl_con_spring.rotateX;
+Lf_Bk_Jia_01_fk_ctrl_con.rotateY = $switch_jia_lf_bk * Lf_Bk_Jia_01_fk_ctrl_con_spring.rotateY;
+Lf_Bk_Jia_01_fk_ctrl_con.rotateZ = $switch_jia_lf_bk * Lf_Bk_Jia_01_fk_ctrl_con_spring.rotateZ;
+Lf_Bk_Jia_2_fk_ctrl_con.rotateX = $switch_jia_lf_bk * Lf_Bk_Jia_2_fk_ctrl_con_spring.rotateX;
+Lf_Bk_Jia_2_fk_ctrl_con.rotateY = $switch_jia_lf_bk * Lf_Bk_Jia_2_fk_ctrl_con_spring.rotateY;
+Lf_Bk_Jia_2_fk_ctrl_con.rotateZ = $switch_jia_lf_bk * Lf_Bk_Jia_2_fk_ctrl_con_spring.rotateZ;
+Lf_Bk_Jia_3_fk_ctrl_con.rotateX = $switch_jia_lf_bk * Lf_Bk_Jia_3_fk_ctrl_con_spring.rotateX;
+Lf_Bk_Jia_3_fk_ctrl_con.rotateY = $switch_jia_lf_bk * Lf_Bk_Jia_3_fk_ctrl_con_spring.rotateY;
+Lf_Bk_Jia_3_fk_ctrl_con.rotateZ = $switch_jia_lf_bk * Lf_Bk_Jia_3_fk_ctrl_con_spring.rotateZ;
+Lf_Bk_Jia_4_fk_ctrl_con.rotateX = $switch_jia_lf_bk * Lf_Bk_Jia_4_fk_ctrl_con_spring.rotateX;
+Lf_Bk_Jia_4_fk_ctrl_con.rotateY = $switch_jia_lf_bk * Lf_Bk_Jia_4_fk_ctrl_con_spring.rotateY;
+Lf_Bk_Jia_4_fk_ctrl_con.rotateZ = $switch_jia_lf_bk * Lf_Bk_Jia_4_fk_ctrl_con_spring.rotateZ;
+Lf_Bk_Jia_5_fk_ctrl_con.rotateX = $switch_jia_lf_bk * Lf_Bk_Jia_5_fk_ctrl_con_spring.rotateX;
+Lf_Bk_Jia_5_fk_ctrl_con.rotateY = $switch_jia_lf_bk * Lf_Bk_Jia_5_fk_ctrl_con_spring.rotateY;
+Lf_Bk_Jia_5_fk_ctrl_con.rotateZ = $switch_jia_lf_bk * Lf_Bk_Jia_5_fk_ctrl_con_spring.rotateZ;
+Lf_Bk_Jia_6_fk_ctrl_con.rotateX = $switch_jia_lf_bk * Lf_Bk_Jia_6_fk_ctrl_con_spring.rotateX;
+Lf_Bk_Jia_6_fk_ctrl_con.rotateY = $switch_jia_lf_bk * Lf_Bk_Jia_6_fk_ctrl_con_spring.rotateY;
+Lf_Bk_Jia_6_fk_ctrl_con.rotateZ = $switch_jia_lf_bk * Lf_Bk_Jia_6_fk_ctrl_con_spring.rotateZ;
+
+float $switch_jia_rt_bk = pd_con.springArmorRtBkSwitch / 10;
+Rt_Bk_Jia_01_fk_ctrl_con.rotateX = $switch_jia_rt_bk * Rt_Bk_Jia_01_fk_ctrl_con_spring.rotateX;
+Rt_Bk_Jia_01_fk_ctrl_con.rotateY = $switch_jia_rt_bk * Rt_Bk_Jia_01_fk_ctrl_con_spring.rotateY;
+Rt_Bk_Jia_01_fk_ctrl_con.rotateZ = $switch_jia_rt_bk * Rt_Bk_Jia_01_fk_ctrl_con_spring.rotateZ;
+Rt_Bk_Jia_2_fk_ctrl_con.rotateX = $switch_jia_rt_bk * Rt_Bk_Jia_2_fk_ctrl_con_spring.rotateX;
+Rt_Bk_Jia_2_fk_ctrl_con.rotateY = $switch_jia_rt_bk * Rt_Bk_Jia_2_fk_ctrl_con_spring.rotateY;
+Rt_Bk_Jia_2_fk_ctrl_con.rotateZ = $switch_jia_rt_bk * Rt_Bk_Jia_2_fk_ctrl_con_spring.rotateZ;
+Rt_Bk_Jia_3_fk_ctrl_con.rotateX = $switch_jia_rt_bk * Rt_Bk_Jia_3_fk_ctrl_con_spring.rotateX;
+Rt_Bk_Jia_3_fk_ctrl_con.rotateY = $switch_jia_rt_bk * Rt_Bk_Jia_3_fk_ctrl_con_spring.rotateY;
+Rt_Bk_Jia_3_fk_ctrl_con.rotateZ = $switch_jia_rt_bk * Rt_Bk_Jia_3_fk_ctrl_con_spring.rotateZ;
+Rt_Bk_Jia_4_fk_ctrl_con.rotateX = $switch_jia_rt_bk * Rt_Bk_Jia_4_fk_ctrl_con_spring.rotateX;
+Rt_Bk_Jia_4_fk_ctrl_con.rotateY = $switch_jia_rt_bk * Rt_Bk_Jia_4_fk_ctrl_con_spring.rotateY;
+Rt_Bk_Jia_4_fk_ctrl_con.rotateZ = $switch_jia_rt_bk * Rt_Bk_Jia_4_fk_ctrl_con_spring.rotateZ;
+Rt_Bk_Jia_5_fk_ctrl_con.rotateX = $switch_jia_rt_bk * Rt_Bk_Jia_5_fk_ctrl_con_spring.rotateX;
+Rt_Bk_Jia_5_fk_ctrl_con.rotateY = $switch_jia_rt_bk * Rt_Bk_Jia_5_fk_ctrl_con_spring.rotateY;
+Rt_Bk_Jia_5_fk_ctrl_con.rotateZ = $switch_jia_rt_bk * Rt_Bk_Jia_5_fk_ctrl_con_spring.rotateZ;
+Rt_Bk_Jia_6_fk_ctrl_con.rotateX = $switch_jia_rt_bk * Rt_Bk_Jia_6_fk_ctrl_con_spring.rotateX;
+Rt_Bk_Jia_6_fk_ctrl_con.rotateY = $switch_jia_rt_bk * Rt_Bk_Jia_6_fk_ctrl_con_spring.rotateY;
+Rt_Bk_Jia_6_fk_ctrl_con.rotateZ = $switch_jia_rt_bk * Rt_Bk_Jia_6_fk_ctrl_con_spring.rotateZ;
+
+float $switch_qun_lf_ft = pd_con.springSkirtLfFtSwitch / 10;
+Lf_Ft_Qun_01_fk_ctrl_con.rotateX = $switch_qun_lf_ft * Lf_Ft_Qun_01_fk_ctrl_con_spring.rotateX;
+Lf_Ft_Qun_01_fk_ctrl_con.rotateY = $switch_qun_lf_ft * Lf_Ft_Qun_01_fk_ctrl_con_spring.rotateY;
+Lf_Ft_Qun_01_fk_ctrl_con.rotateZ = $switch_qun_lf_ft * Lf_Ft_Qun_01_fk_ctrl_con_spring.rotateZ;
+Lf_Ft_Qun_2_fk_ctrl_con.rotateX = $switch_qun_lf_ft * Lf_Ft_Qun_2_fk_ctrl_con_spring.rotateX;
+Lf_Ft_Qun_2_fk_ctrl_con.rotateY = $switch_qun_lf_ft * Lf_Ft_Qun_2_fk_ctrl_con_spring.rotateY;
+Lf_Ft_Qun_2_fk_ctrl_con.rotateZ = $switch_qun_lf_ft * Lf_Ft_Qun_2_fk_ctrl_con_spring.rotateZ;
+Lf_Ft_Qun_3_fk_ctrl_con.rotateX = $switch_qun_lf_ft * Lf_Ft_Qun_3_fk_ctrl_con_spring.rotateX;
+Lf_Ft_Qun_3_fk_ctrl_con.rotateY = $switch_qun_lf_ft * Lf_Ft_Qun_3_fk_ctrl_con_spring.rotateY;
+Lf_Ft_Qun_3_fk_ctrl_con.rotateZ = $switch_qun_lf_ft * Lf_Ft_Qun_3_fk_ctrl_con_spring.rotateZ;
+Lf_Ft_Qun_4_fk_ctrl_con.rotateX = $switch_qun_lf_ft * Lf_Ft_Qun_4_fk_ctrl_con_spring.rotateX;
+Lf_Ft_Qun_4_fk_ctrl_con.rotateY = $switch_qun_lf_ft * Lf_Ft_Qun_4_fk_ctrl_con_spring.rotateY;
+Lf_Ft_Qun_4_fk_ctrl_con.rotateZ = $switch_qun_lf_ft * Lf_Ft_Qun_4_fk_ctrl_con_spring.rotateZ;
+Lf_Ft_Qun_5_fk_ctrl_con.rotateX = $switch_qun_lf_ft * Lf_Ft_Qun_5_fk_ctrl_con_spring.rotateX;
+Lf_Ft_Qun_5_fk_ctrl_con.rotateY = $switch_qun_lf_ft * Lf_Ft_Qun_5_fk_ctrl_con_spring.rotateY;
+Lf_Ft_Qun_5_fk_ctrl_con.rotateZ = $switch_qun_lf_ft * Lf_Ft_Qun_5_fk_ctrl_con_spring.rotateZ;
+Lf_Ft_Qun_6_fk_ctrl_con.rotateX = $switch_qun_lf_ft * Lf_Ft_Qun_6_fk_ctrl_con_spring.rotateX;
+Lf_Ft_Qun_6_fk_ctrl_con.rotateY = $switch_qun_lf_ft * Lf_Ft_Qun_6_fk_ctrl_con_spring.rotateY;
+Lf_Ft_Qun_6_fk_ctrl_con.rotateZ = $switch_qun_lf_ft * Lf_Ft_Qun_6_fk_ctrl_con_spring.rotateZ;
+Lf_Ft_Qun_7_fk_ctrl_con.rotateX = $switch_qun_lf_ft * Lf_Ft_Qun_7_fk_ctrl_con_spring.rotateX;
+Lf_Ft_Qun_7_fk_ctrl_con.rotateY = $switch_qun_lf_ft * Lf_Ft_Qun_7_fk_ctrl_con_spring.rotateY;
+Lf_Ft_Qun_7_fk_ctrl_con.rotateZ = $switch_qun_lf_ft * Lf_Ft_Qun_7_fk_ctrl_con_spring.rotateZ;
+
+float $switch_qun_rt_ft = pd_con.springSkirtRtFtSwitch / 10;
+Rt_Ft_Qun_01_fk_ctrl_con.rotateX = $switch_qun_rt_ft * Rt_Ft_Qun_01_fk_ctrl_con_spring.rotateX;
+Rt_Ft_Qun_01_fk_ctrl_con.rotateY = $switch_qun_rt_ft * Rt_Ft_Qun_01_fk_ctrl_con_spring.rotateY;
+Rt_Ft_Qun_01_fk_ctrl_con.rotateZ = $switch_qun_rt_ft * Rt_Ft_Qun_01_fk_ctrl_con_spring.rotateZ;
+Rt_Ft_Qun_2_fk_ctrl_con.rotateX = $switch_qun_rt_ft * Rt_Ft_Qun_2_fk_ctrl_con_spring.rotateX;
+Rt_Ft_Qun_2_fk_ctrl_con.rotateY = $switch_qun_rt_ft * Rt_Ft_Qun_2_fk_ctrl_con_spring.rotateY;
+Rt_Ft_Qun_2_fk_ctrl_con.rotateZ = $switch_qun_rt_ft * Rt_Ft_Qun_2_fk_ctrl_con_spring.rotateZ;
+Rt_Ft_Qun_3_fk_ctrl_con.rotateX = $switch_qun_rt_ft * Rt_Ft_Qun_3_fk_ctrl_con_spring.rotateX;
+Rt_Ft_Qun_3_fk_ctrl_con.rotateY = $switch_qun_rt_ft * Rt_Ft_Qun_3_fk_ctrl_con_spring.rotateY;
+Rt_Ft_Qun_3_fk_ctrl_con.rotateZ = $switch_qun_rt_ft * Rt_Ft_Qun_3_fk_ctrl_con_spring.rotateZ;
+Rt_Ft_Qun_4_fk_ctrl_con.rotateX = $switch_qun_rt_ft * Rt_Ft_Qun_4_fk_ctrl_con_spring.rotateX;
+Rt_Ft_Qun_4_fk_ctrl_con.rotateY = $switch_qun_rt_ft * Rt_Ft_Qun_4_fk_ctrl_con_spring.rotateY;
+Rt_Ft_Qun_4_fk_ctrl_con.rotateZ = $switch_qun_rt_ft * Rt_Ft_Qun_4_fk_ctrl_con_spring.rotateZ;
+Rt_Ft_Qun_5_fk_ctrl_con.rotateX = $switch_qun_rt_ft * Rt_Ft_Qun_5_fk_ctrl_con_spring.rotateX;
+Rt_Ft_Qun_5_fk_ctrl_con.rotateY = $switch_qun_rt_ft * Rt_Ft_Qun_5_fk_ctrl_con_spring.rotateY;
+Rt_Ft_Qun_5_fk_ctrl_con.rotateZ = $switch_qun_rt_ft * Rt_Ft_Qun_5_fk_ctrl_con_spring.rotateZ;
+Rt_Ft_Qun_6_fk_ctrl_con.rotateX = $switch_qun_rt_ft * Rt_Ft_Qun_6_fk_ctrl_con_spring.rotateX;
+Rt_Ft_Qun_6_fk_ctrl_con.rotateY = $switch_qun_rt_ft * Rt_Ft_Qun_6_fk_ctrl_con_spring.rotateY;
+Rt_Ft_Qun_6_fk_ctrl_con.rotateZ = $switch_qun_rt_ft * Rt_Ft_Qun_6_fk_ctrl_con_spring.rotateZ;
+Rt_Ft_Qun_7_fk_ctrl_con.rotateX = $switch_qun_rt_ft * Rt_Ft_Qun_7_fk_ctrl_con_spring.rotateX;
+Rt_Ft_Qun_7_fk_ctrl_con.rotateY = $switch_qun_rt_ft * Rt_Ft_Qun_7_fk_ctrl_con_spring.rotateY;
+Rt_Ft_Qun_7_fk_ctrl_con.rotateZ = $switch_qun_rt_ft * Rt_Ft_Qun_7_fk_ctrl_con_spring.rotateZ;
+
+float $switch_qun_lf = pd_con.springSkirtLfSwitch / 10;
+Lf_Qun_01_fk_ctrl_con.rotateX = $switch_qun_lf * Lf_Qun_01_fk_ctrl_con_spring.rotateX;
+Lf_Qun_01_fk_ctrl_con.rotateY = $switch_qun_lf * Lf_Qun_01_fk_ctrl_con_spring.rotateY;
+Lf_Qun_01_fk_ctrl_con.rotateZ = $switch_qun_lf * Lf_Qun_01_fk_ctrl_con_spring.rotateZ;
+Lf_Qun_2_fk_ctrl_con.rotateX = $switch_qun_lf * Lf_Qun_2_fk_ctrl_con_spring.rotateX;
+Lf_Qun_2_fk_ctrl_con.rotateY = $switch_qun_lf * Lf_Qun_2_fk_ctrl_con_spring.rotateY;
+Lf_Qun_2_fk_ctrl_con.rotateZ = $switch_qun_lf * Lf_Qun_2_fk_ctrl_con_spring.rotateZ;
+Lf_Qun_3_fk_ctrl_con.rotateX = $switch_qun_lf * Lf_Qun_3_fk_ctrl_con_spring.rotateX;
+Lf_Qun_3_fk_ctrl_con.rotateY = $switch_qun_lf * Lf_Qun_3_fk_ctrl_con_spring.rotateY;
+Lf_Qun_3_fk_ctrl_con.rotateZ = $switch_qun_lf * Lf_Qun_3_fk_ctrl_con_spring.rotateZ;
+Lf_Qun_4_fk_ctrl_con.rotateX = $switch_qun_lf * Lf_Qun_4_fk_ctrl_con_spring.rotateX;
+Lf_Qun_4_fk_ctrl_con.rotateY = $switch_qun_lf * Lf_Qun_4_fk_ctrl_con_spring.rotateY;
+Lf_Qun_4_fk_ctrl_con.rotateZ = $switch_qun_lf * Lf_Qun_4_fk_ctrl_con_spring.rotateZ;
+Lf_Qun_5_fk_ctrl_con.rotateX = $switch_qun_lf * Lf_Qun_5_fk_ctrl_con_spring.rotateX;
+Lf_Qun_5_fk_ctrl_con.rotateY = $switch_qun_lf * Lf_Qun_5_fk_ctrl_con_spring.rotateY;
+Lf_Qun_5_fk_ctrl_con.rotateZ = $switch_qun_lf * Lf_Qun_5_fk_ctrl_con_spring.rotateZ;
+Lf_Qun_6_fk_ctrl_con.rotateX = $switch_qun_lf * Lf_Qun_6_fk_ctrl_con_spring.rotateX;
+Lf_Qun_6_fk_ctrl_con.rotateY = $switch_qun_lf * Lf_Qun_6_fk_ctrl_con_spring.rotateY;
+Lf_Qun_6_fk_ctrl_con.rotateZ = $switch_qun_lf * Lf_Qun_6_fk_ctrl_con_spring.rotateZ;
+Lf_Qun_7_fk_ctrl_con.rotateX = $switch_qun_lf * Lf_Qun_7_fk_ctrl_con_spring.rotateX;
+Lf_Qun_7_fk_ctrl_con.rotateY = $switch_qun_lf * Lf_Qun_7_fk_ctrl_con_spring.rotateY;
+Lf_Qun_7_fk_ctrl_con.rotateZ = $switch_qun_lf * Lf_Qun_7_fk_ctrl_con_spring.rotateZ;
+
+float $switch_qun_rt = pd_con.springSkirtRtSwitch / 10;
+Rt_Qun_01_fk_ctrl_con.rotateX = $switch_qun_rt * Rt_Qun_01_fk_ctrl_con_spring.rotateX;
+Rt_Qun_01_fk_ctrl_con.rotateY = $switch_qun_rt * Rt_Qun_01_fk_ctrl_con_spring.rotateY;
+Rt_Qun_01_fk_ctrl_con.rotateZ = $switch_qun_rt * Rt_Qun_01_fk_ctrl_con_spring.rotateZ;
+Rt_Qun_2_fk_ctrl_con.rotateX = $switch_qun_rt * Rt_Qun_2_fk_ctrl_con_spring.rotateX;
+Rt_Qun_2_fk_ctrl_con.rotateY = $switch_qun_rt * Rt_Qun_2_fk_ctrl_con_spring.rotateY;
+Rt_Qun_2_fk_ctrl_con.rotateZ = $switch_qun_rt * Rt_Qun_2_fk_ctrl_con_spring.rotateZ;
+Rt_Qun_3_fk_ctrl_con.rotateX = $switch_qun_rt * Rt_Qun_3_fk_ctrl_con_spring.rotateX;
+Rt_Qun_3_fk_ctrl_con.rotateY = $switch_qun_rt * Rt_Qun_3_fk_ctrl_con_spring.rotateY;
+Rt_Qun_3_fk_ctrl_con.rotateZ = $switch_qun_rt * Rt_Qun_3_fk_ctrl_con_spring.rotateZ;
+Rt_Qun_4_fk_ctrl_con.rotateX = $switch_qun_rt * Rt_Qun_4_fk_ctrl_con_spring.rotateX;
+Rt_Qun_4_fk_ctrl_con.rotateY = $switch_qun_rt * Rt_Qun_4_fk_ctrl_con_spring.rotateY;
+Rt_Qun_4_fk_ctrl_con.rotateZ = $switch_qun_rt * Rt_Qun_4_fk_ctrl_con_spring.rotateZ;
+Rt_Qun_5_fk_ctrl_con.rotateX = $switch_qun_rt * Rt_Qun_5_fk_ctrl_con_spring.rotateX;
+Rt_Qun_5_fk_ctrl_con.rotateY = $switch_qun_rt * Rt_Qun_5_fk_ctrl_con_spring.rotateY;
+Rt_Qun_5_fk_ctrl_con.rotateZ = $switch_qun_rt * Rt_Qun_5_fk_ctrl_con_spring.rotateZ;
+Rt_Qun_6_fk_ctrl_con.rotateX = $switch_qun_rt * Rt_Qun_6_fk_ctrl_con_spring.rotateX;
+Rt_Qun_6_fk_ctrl_con.rotateY = $switch_qun_rt * Rt_Qun_6_fk_ctrl_con_spring.rotateY;
+Rt_Qun_6_fk_ctrl_con.rotateZ = $switch_qun_rt * Rt_Qun_6_fk_ctrl_con_spring.rotateZ;
+Rt_Qun_7_fk_ctrl_con.rotateX = $switch_qun_rt * Rt_Qun_7_fk_ctrl_con_spring.rotateX;
+Rt_Qun_7_fk_ctrl_con.rotateY = $switch_qun_rt * Rt_Qun_7_fk_ctrl_con_spring.rotateY;
+Rt_Qun_7_fk_ctrl_con.rotateZ = $switch_qun_rt * Rt_Qun_7_fk_ctrl_con_spring.rotateZ;
+
+float $switch_qun_lf_bk = pd_con.springSkritLfBkSwitch / 10;
+Lf_Bk_Qun_01_fk_ctrl_con.rotateX = $switch_qun_lf_bk * Lf_Bk_Qun_01_fk_ctrl_con_spring.rotateX;
+Lf_Bk_Qun_01_fk_ctrl_con.rotateY = $switch_qun_lf_bk * Lf_Bk_Qun_01_fk_ctrl_con_spring.rotateY;
+Lf_Bk_Qun_01_fk_ctrl_con.rotateZ = $switch_qun_lf_bk * Lf_Bk_Qun_01_fk_ctrl_con_spring.rotateZ;
+Lf_Bk_Qun_2_fk_ctrl_con.rotateX = $switch_qun_lf_bk * Lf_Bk_Qun_2_fk_ctrl_con_spring.rotateX;
+Lf_Bk_Qun_2_fk_ctrl_con.rotateY = $switch_qun_lf_bk * Lf_Bk_Qun_2_fk_ctrl_con_spring.rotateY;
+Lf_Bk_Qun_2_fk_ctrl_con.rotateZ = $switch_qun_lf_bk * Lf_Bk_Qun_2_fk_ctrl_con_spring.rotateZ;
+Lf_Bk_Qun_3_fk_ctrl_con.rotateX = $switch_qun_lf_bk * Lf_Bk_Qun_3_fk_ctrl_con_spring.rotateX;
+Lf_Bk_Qun_3_fk_ctrl_con.rotateY = $switch_qun_lf_bk * Lf_Bk_Qun_3_fk_ctrl_con_spring.rotateY;
+Lf_Bk_Qun_3_fk_ctrl_con.rotateZ = $switch_qun_lf_bk * Lf_Bk_Qun_3_fk_ctrl_con_spring.rotateZ;
+Lf_Bk_Qun_4_fk_ctrl_con.rotateX = $switch_qun_lf_bk * Lf_Bk_Qun_4_fk_ctrl_con_spring.rotateX;
+Lf_Bk_Qun_4_fk_ctrl_con.rotateY = $switch_qun_lf_bk * Lf_Bk_Qun_4_fk_ctrl_con_spring.rotateY;
+Lf_Bk_Qun_4_fk_ctrl_con.rotateZ = $switch_qun_lf_bk * Lf_Bk_Qun_4_fk_ctrl_con_spring.rotateZ;
+Lf_Bk_Qun_5_fk_ctrl_con.rotateX = $switch_qun_lf_bk * Lf_Bk_Qun_5_fk_ctrl_con_spring.rotateX;
+Lf_Bk_Qun_5_fk_ctrl_con.rotateY = $switch_qun_lf_bk * Lf_Bk_Qun_5_fk_ctrl_con_spring.rotateY;
+Lf_Bk_Qun_5_fk_ctrl_con.rotateZ = $switch_qun_lf_bk * Lf_Bk_Qun_5_fk_ctrl_con_spring.rotateZ;
+Lf_Bk_Qun_6_fk_ctrl_con.rotateX = $switch_qun_lf_bk * Lf_Bk_Qun_6_fk_ctrl_con_spring.rotateX;
+Lf_Bk_Qun_6_fk_ctrl_con.rotateY = $switch_qun_lf_bk * Lf_Bk_Qun_6_fk_ctrl_con_spring.rotateY;
+Lf_Bk_Qun_6_fk_ctrl_con.rotateZ = $switch_qun_lf_bk * Lf_Bk_Qun_6_fk_ctrl_con_spring.rotateZ;
+Lf_Bk_Qun_7_fk_ctrl_con.rotateX = $switch_qun_lf_bk * Lf_Bk_Qun_7_fk_ctrl_con_spring.rotateX;
+Lf_Bk_Qun_7_fk_ctrl_con.rotateY = $switch_qun_lf_bk * Lf_Bk_Qun_7_fk_ctrl_con_spring.rotateY;
+Lf_Bk_Qun_7_fk_ctrl_con.rotateZ = $switch_qun_lf_bk * Lf_Bk_Qun_7_fk_ctrl_con_spring.rotateZ;
+
+float $switch_qun_rt_bk = pd_con.springSkritRtBkSwitch / 10;
+Rt_Bk_Qun_01_fk_ctrl_con.rotateX = $switch_qun_rt_bk * Rt_Bk_Qun_01_fk_ctrl_con_spring.rotateX;
+Rt_Bk_Qun_01_fk_ctrl_con.rotateY = $switch_qun_rt_bk * Rt_Bk_Qun_01_fk_ctrl_con_spring.rotateY;
+Rt_Bk_Qun_01_fk_ctrl_con.rotateZ = $switch_qun_rt_bk * Rt_Bk_Qun_01_fk_ctrl_con_spring.rotateZ;
+Rt_Bk_Qun_2_fk_ctrl_con.rotateX = $switch_qun_rt_bk * Rt_Bk_Qun_2_fk_ctrl_con_spring.rotateX;
+Rt_Bk_Qun_2_fk_ctrl_con.rotateY = $switch_qun_rt_bk * Rt_Bk_Qun_2_fk_ctrl_con_spring.rotateY;
+Rt_Bk_Qun_2_fk_ctrl_con.rotateZ = $switch_qun_rt_bk * Rt_Bk_Qun_2_fk_ctrl_con_spring.rotateZ;
+Rt_Bk_Qun_3_fk_ctrl_con.rotateX = $switch_qun_rt_bk * Rt_Bk_Qun_3_fk_ctrl_con_spring.rotateX;
+Rt_Bk_Qun_3_fk_ctrl_con.rotateY = $switch_qun_rt_bk * Rt_Bk_Qun_3_fk_ctrl_con_spring.rotateY;
+Rt_Bk_Qun_3_fk_ctrl_con.rotateZ = $switch_qun_rt_bk * Rt_Bk_Qun_3_fk_ctrl_con_spring.rotateZ;
+Rt_Bk_Qun_4_fk_ctrl_con.rotateX = $switch_qun_rt_bk * Rt_Bk_Qun_4_fk_ctrl_con_spring.rotateX;
+Rt_Bk_Qun_4_fk_ctrl_con.rotateY = $switch_qun_rt_bk * Rt_Bk_Qun_4_fk_ctrl_con_spring.rotateY;
+Rt_Bk_Qun_4_fk_ctrl_con.rotateZ = $switch_qun_rt_bk * Rt_Bk_Qun_4_fk_ctrl_con_spring.rotateZ;
+Rt_Bk_Qun_5_fk_ctrl_con.rotateX = $switch_qun_rt_bk * Rt_Bk_Qun_5_fk_ctrl_con_spring.rotateX;
+Rt_Bk_Qun_5_fk_ctrl_con.rotateY = $switch_qun_rt_bk * Rt_Bk_Qun_5_fk_ctrl_con_spring.rotateY;
+Rt_Bk_Qun_5_fk_ctrl_con.rotateZ = $switch_qun_rt_bk * Rt_Bk_Qun_5_fk_ctrl_con_spring.rotateZ;
+Rt_Bk_Qun_6_fk_ctrl_con.rotateX = $switch_qun_rt_bk * Rt_Bk_Qun_6_fk_ctrl_con_spring.rotateX;
+Rt_Bk_Qun_6_fk_ctrl_con.rotateY = $switch_qun_rt_bk * Rt_Bk_Qun_6_fk_ctrl_con_spring.rotateY;
+Rt_Bk_Qun_6_fk_ctrl_con.rotateZ = $switch_qun_rt_bk * Rt_Bk_Qun_6_fk_ctrl_con_spring.rotateZ;
+Rt_Bk_Qun_7_fk_ctrl_con.rotateX = $switch_qun_rt_bk * Rt_Bk_Qun_7_fk_ctrl_con_spring.rotateX;
+Rt_Bk_Qun_7_fk_ctrl_con.rotateY = $switch_qun_rt_bk * Rt_Bk_Qun_7_fk_ctrl_con_spring.rotateY;
+Rt_Bk_Qun_7_fk_ctrl_con.rotateZ = $switch_qun_rt_bk * Rt_Bk_Qun_7_fk_ctrl_con_spring.rotateZ;
+
+float $switch_Ribbon = pd_con.springRibbonSwitch / 10;
+piaodaiL_01_fk_ctrl_con.rotateX = $switch_Ribbon * piaodaiL_01_fk_ctrl_con_spring.rotateX;
+piaodaiL_01_fk_ctrl_con.rotateY = $switch_Ribbon * piaodaiL_01_fk_ctrl_con_spring.rotateY;
+piaodaiL_01_fk_ctrl_con.rotateZ = $switch_Ribbon * piaodaiL_01_fk_ctrl_con_spring.rotateZ;
+piaodaiL_2_fk_ctrl_con.rotateX = $switch_Ribbon * piaodaiL_2_fk_ctrl_con_spring.rotateX;
+piaodaiL_2_fk_ctrl_con.rotateY = $switch_Ribbon * piaodaiL_2_fk_ctrl_con_spring.rotateY;
+piaodaiL_2_fk_ctrl_con.rotateZ = $switch_Ribbon * piaodaiL_2_fk_ctrl_con_spring.rotateZ;
+piaodaiL_3_fk_ctrl_con.rotateX = $switch_Ribbon * piaodaiL_3_fk_ctrl_con_spring.rotateX;
+piaodaiL_3_fk_ctrl_con.rotateY = $switch_Ribbon * piaodaiL_3_fk_ctrl_con_spring.rotateY;
+piaodaiL_3_fk_ctrl_con.rotateZ = $switch_Ribbon * piaodaiL_3_fk_ctrl_con_spring.rotateZ;
+piaodaiL_4_fk_ctrl_con.rotateX = $switch_Ribbon * piaodaiL_4_fk_ctrl_con_spring.rotateX;
+piaodaiL_4_fk_ctrl_con.rotateY = $switch_Ribbon * piaodaiL_4_fk_ctrl_con_spring.rotateY;
+piaodaiL_4_fk_ctrl_con.rotateZ = $switch_Ribbon * piaodaiL_4_fk_ctrl_con_spring.rotateZ;
+piaodaiL_5_fk_ctrl_con.rotateX = $switch_Ribbon * piaodaiL_5_fk_ctrl_con_spring.rotateX;
+piaodaiL_5_fk_ctrl_con.rotateY = $switch_Ribbon * piaodaiL_5_fk_ctrl_con_spring.rotateY;
+piaodaiL_5_fk_ctrl_con.rotateZ = $switch_Ribbon * piaodaiL_5_fk_ctrl_con_spring.rotateZ;
+piaodaiL_6_fk_ctrl_con.rotateX = $switch_Ribbon * piaodaiL_6_fk_ctrl_con_spring.rotateX;
+piaodaiL_6_fk_ctrl_con.rotateY = $switch_Ribbon * piaodaiL_6_fk_ctrl_con_spring.rotateY;
+piaodaiL_6_fk_ctrl_con.rotateZ = $switch_Ribbon * piaodaiL_6_fk_ctrl_con_spring.rotateZ;
+piaodaiL_7_fk_ctrl_con.rotateX = $switch_Ribbon * piaodaiL_7_fk_ctrl_con_spring.rotateX;
+piaodaiL_7_fk_ctrl_con.rotateY = $switch_Ribbon * piaodaiL_7_fk_ctrl_con_spring.rotateY;
+piaodaiL_7_fk_ctrl_con.rotateZ = $switch_Ribbon * piaodaiL_7_fk_ctrl_con_spring.rotateZ;
+
+piaodaiR_01_fk_ctrl_con.rotateX = $switch_Ribbon * piaodaiR_01_fk_ctrl_con_spring.rotateX;
+piaodaiR_01_fk_ctrl_con.rotateY = $switch_Ribbon * piaodaiR_01_fk_ctrl_con_spring.rotateY;
+piaodaiR_01_fk_ctrl_con.rotateZ = $switch_Ribbon * piaodaiR_01_fk_ctrl_con_spring.rotateZ;
+piaodaiR_2_fk_ctrl_con.rotateX = $switch_Ribbon * piaodaiR_2_fk_ctrl_con_spring.rotateX;
+piaodaiR_2_fk_ctrl_con.rotateY = $switch_Ribbon * piaodaiR_2_fk_ctrl_con_spring.rotateY;
+piaodaiR_2_fk_ctrl_con.rotateZ = $switch_Ribbon * piaodaiR_2_fk_ctrl_con_spring.rotateZ;
+piaodaiR_3_fk_ctrl_con.rotateX = $switch_Ribbon * piaodaiR_3_fk_ctrl_con_spring.rotateX;
+piaodaiR_3_fk_ctrl_con.rotateY = $switch_Ribbon * piaodaiR_3_fk_ctrl_con_spring.rotateY;
+piaodaiR_3_fk_ctrl_con.rotateZ = $switch_Ribbon * piaodaiR_3_fk_ctrl_con_spring.rotateZ;
+piaodaiR_4_fk_ctrl_con.rotateX = $switch_Ribbon * piaodaiR_4_fk_ctrl_con_spring.rotateX;
+piaodaiR_4_fk_ctrl_con.rotateY = $switch_Ribbon * piaodaiR_4_fk_ctrl_con_spring.rotateY;
+piaodaiR_4_fk_ctrl_con.rotateZ = $switch_Ribbon * piaodaiR_4_fk_ctrl_con_spring.rotateZ;
+piaodaiR_5_fk_ctrl_con.rotateX = $switch_Ribbon * piaodaiR_5_fk_ctrl_con_spring.rotateX;
+piaodaiR_5_fk_ctrl_con.rotateY = $switch_Ribbon * piaodaiR_5_fk_ctrl_con_spring.rotateY;
+piaodaiR_5_fk_ctrl_con.rotateZ = $switch_Ribbon * piaodaiR_5_fk_ctrl_con_spring.rotateZ;
+piaodaiR_6_fk_ctrl_con.rotateX = $switch_Ribbon * piaodaiR_6_fk_ctrl_con_spring.rotateX;
+piaodaiR_6_fk_ctrl_con.rotateY = $switch_Ribbon * piaodaiR_6_fk_ctrl_con_spring.rotateY;
+piaodaiR_6_fk_ctrl_con.rotateZ = $switch_Ribbon * piaodaiR_6_fk_ctrl_con_spring.rotateZ;
+piaodaiR_7_fk_ctrl_con.rotateX = $switch_Ribbon * piaodaiR_7_fk_ctrl_con_spring.rotateX;
+piaodaiR_7_fk_ctrl_con.rotateY = $switch_Ribbon * piaodaiR_7_fk_ctrl_con_spring.rotateY;
+piaodaiR_7_fk_ctrl_con.rotateZ = $switch_Ribbon * piaodaiR_7_fk_ctrl_con_spring.rotateZ;
+
+float $switch_hair = pd_con.springHairSwitch / 10;
+mawei1_M_fk_ctrl_con.rotateX = $switch_hair * mawei1_M_fk_ctrl_con_spring.rotateX;
+mawei1_M_fk_ctrl_con.rotateY = $switch_hair * mawei1_M_fk_ctrl_con_spring.rotateY;
+mawei1_M_fk_ctrl_con.rotateZ = $switch_hair * mawei1_M_fk_ctrl_con_spring.rotateZ;
+mawei2_M_fk_ctrl_con.rotateX = $switch_hair * mawei2_M_fk_ctrl_con_spring.rotateX;
+mawei2_M_fk_ctrl_con.rotateY = $switch_hair * mawei2_M_fk_ctrl_con_spring.rotateY;
+mawei2_M_fk_ctrl_con.rotateZ = $switch_hair * mawei2_M_fk_ctrl_con_spring.rotateZ;
+mawei3_M_fk_ctrl_con.rotateX = $switch_hair * mawei3_M_fk_ctrl_con_spring.rotateX;
+mawei3_M_fk_ctrl_con.rotateY = $switch_hair * mawei3_M_fk_ctrl_con_spring.rotateY;
+mawei3_M_fk_ctrl_con.rotateZ = $switch_hair * mawei3_M_fk_ctrl_con_spring.rotateZ;
+mawei4_M_fk_ctrl_con.rotateX = $switch_hair * mawei4_M_fk_ctrl_con_spring.rotateX;
+mawei4_M_fk_ctrl_con.rotateY = $switch_hair * mawei4_M_fk_ctrl_con_spring.rotateY;
+mawei4_M_fk_ctrl_con.rotateZ = $switch_hair * mawei4_M_fk_ctrl_con_spring.rotateZ;
+
+pifa1_M_fk_ctrl_con.rotateX = $switch_hair * pifa1_M_fk_ctrl_con_spring.rotateX;
+pifa1_M_fk_ctrl_con.rotateY = $switch_hair * pifa1_M_fk_ctrl_con_spring.rotateY;
+pifa1_M_fk_ctrl_con.rotateZ = $switch_hair * pifa1_M_fk_ctrl_con_spring.rotateZ;
+pifa2_M_fk_ctrl_con.rotateX = $switch_hair * pifa2_M_fk_ctrl_con_spring.rotateX;
+pifa2_M_fk_ctrl_con.rotateY = $switch_hair * pifa2_M_fk_ctrl_con_spring.rotateY;
+pifa2_M_fk_ctrl_con.rotateZ = $switch_hair * pifa2_M_fk_ctrl_con_spring.rotateZ;
+pifa3_M_fk_ctrl_con.rotateX = $switch_hair * pifa3_M_fk_ctrl_con_spring.rotateX;
+pifa3_M_fk_ctrl_con.rotateY = $switch_hair * pifa3_M_fk_ctrl_con_spring.rotateY;
+pifa3_M_fk_ctrl_con.rotateZ = $switch_hair * pifa3_M_fk_ctrl_con_spring.rotateZ;
+pifa4_M_fk_ctrl_con.rotateX = $switch_hair * pifa4_M_fk_ctrl_con_spring.rotateX;
+pifa4_M_fk_ctrl_con.rotateY = $switch_hair * pifa4_M_fk_ctrl_con_spring.rotateY;
+pifa4_M_fk_ctrl_con.rotateZ = $switch_hair * pifa4_M_fk_ctrl_con_spring.rotateZ;
+
+liuhai1_R_fk_ctrl_con.rotateX = $switch_hair * liuhai1_R_fk_ctrl_con_spring.rotateX;
+liuhai1_R_fk_ctrl_con.rotateY = $switch_hair * liuhai1_R_fk_ctrl_con_spring.rotateY;
+liuhai1_R_fk_ctrl_con.rotateZ = $switch_hair * liuhai1_R_fk_ctrl_con_spring.rotateZ;
+liuhai2_R_fk_ctrl_con.rotateX = $switch_hair * liuhai2_R_fk_ctrl_con_spring.rotateX;
+liuhai2_R_fk_ctrl_con.rotateY = $switch_hair * liuhai2_R_fk_ctrl_con_spring.rotateY;
+liuhai2_R_fk_ctrl_con.rotateZ = $switch_hair * liuhai2_R_fk_ctrl_con_spring.rotateZ;
+liuhai3_R_fk_ctrl_con.rotateX = $switch_hair * liuhai3_R_fk_ctrl_con_spring.rotateX;
+liuhai3_R_fk_ctrl_con.rotateY = $switch_hair * liuhai3_R_fk_ctrl_con_spring.rotateY;
+liuhai3_R_fk_ctrl_con.rotateZ = $switch_hair * liuhai3_R_fk_ctrl_con_spring.rotateZ;
+liuhai4_R_fk_ctrl_con.rotateX = $switch_hair * liuhai4_R_fk_ctrl_con_spring.rotateX;
+liuhai4_R_fk_ctrl_con.rotateY = $switch_hair * liuhai4_R_fk_ctrl_con_spring.rotateY;
+liuhai4_R_fk_ctrl_con.rotateZ = $switch_hair * liuhai4_R_fk_ctrl_con_spring.rotateZ;
+
+bingfa1_R_fk_ctrl_con.rotateX = $switch_hair * bingfa1_R_fk_ctrl_con_spring.rotateX;
+bingfa1_R_fk_ctrl_con.rotateY = $switch_hair * bingfa1_R_fk_ctrl_con_spring.rotateY;
+bingfa1_R_fk_ctrl_con.rotateZ = $switch_hair * bingfa1_R_fk_ctrl_con_spring.rotateZ;
+bingfa2_R_fk_ctrl_con.rotateX = $switch_hair * bingfa2_R_fk_ctrl_con_spring.rotateX;
+bingfa2_R_fk_ctrl_con.rotateY = $switch_hair * bingfa2_R_fk_ctrl_con_spring.rotateY;
+bingfa2_R_fk_ctrl_con.rotateZ = $switch_hair * bingfa2_R_fk_ctrl_con_spring.rotateZ;
+bingfa3_R_fk_ctrl_con.rotateX = $switch_hair * bingfa3_R_fk_ctrl_con_spring.rotateX;
+bingfa3_R_fk_ctrl_con.rotateY = $switch_hair * bingfa3_R_fk_ctrl_con_spring.rotateY;
+bingfa3_R_fk_ctrl_con.rotateZ = $switch_hair * bingfa3_R_fk_ctrl_con_spring.rotateZ;
+bingfa4_R_fk_ctrl_con.rotateX = $switch_hair * bingfa4_R_fk_ctrl_con_spring.rotateX;
+bingfa4_R_fk_ctrl_con.rotateY = $switch_hair * bingfa4_R_fk_ctrl_con_spring.rotateY;
+bingfa4_R_fk_ctrl_con.rotateZ = $switch_hair * bingfa4_R_fk_ctrl_con_spring.rotateZ;
+
+bingfa1_L_fk_ctrl_con.rotateX = $switch_hair * bingfa1_L_fk_ctrl_con_spring.rotateX;
+bingfa1_L_fk_ctrl_con.rotateY = $switch_hair * bingfa1_L_fk_ctrl_con_spring.rotateY;
+bingfa1_L_fk_ctrl_con.rotateZ = $switch_hair * bingfa1_L_fk_ctrl_con_spring.rotateZ;
+bingfa2_L_fk_ctrl_con.rotateX = $switch_hair * bingfa2_L_fk_ctrl_con_spring.rotateX;
+bingfa2_L_fk_ctrl_con.rotateY = $switch_hair * bingfa2_L_fk_ctrl_con_spring.rotateY;
+bingfa2_L_fk_ctrl_con.rotateZ = $switch_hair * bingfa2_L_fk_ctrl_con_spring.rotateZ;
+bingfa3_L_fk_ctrl_con.rotateX = $switch_hair * bingfa3_L_fk_ctrl_con_spring.rotateX;
+bingfa3_L_fk_ctrl_con.rotateY = $switch_hair * bingfa3_L_fk_ctrl_con_spring.rotateY;
+bingfa3_L_fk_ctrl_con.rotateZ = $switch_hair * bingfa3_L_fk_ctrl_con_spring.rotateZ;
+bingfa4_L_fk_ctrl_con.rotateX = $switch_hair * bingfa4_L_fk_ctrl_con_spring.rotateX;
+bingfa4_L_fk_ctrl_con.rotateY = $switch_hair * bingfa4_L_fk_ctrl_con_spring.rotateY;
+bingfa4_L_fk_ctrl_con.rotateZ = $switch_hair * bingfa4_L_fk_ctrl_con_spring.rotateZ;

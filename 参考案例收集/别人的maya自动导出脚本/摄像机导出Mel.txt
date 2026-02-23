@@ -1,0 +1,33 @@
+/*选择摄像机导出*/
+
+string $CameraName[]=`ls -sl`;
+string $Camera=`rename $CameraName[0] "CameraParent"`;
+
+string $CameraShapeName[]=`ls -dag -sl -s` ;
+string $CameraShape=`rename $CameraShapeName[0] "CameraParentShape"`;
+/*
+CBunlockAttr ($Camera+".tx");
+CBunlockAttr ($Camera+".ty");
+CBunlockAttr ($Camera+".tz");
+CBunlockAttr ($Camera+".rx");
+CBunlockAttr ($Camera+".ry");
+CBunlockAttr ($Camera+".rz");
+CBunlockAttr ($Camera+".sx");
+CBunlockAttr ($Camera+".sy");
+CBunlockAttr ($Camera+".sz");
+CBunlockAttr ($Camera+".v");
+*/
+string $Name[]=`duplicate -rr $Camera`;
+string $CameraNames=`rename $Name[0] "CameraOutput"`;
+group -n "CameraGroup" $CameraNames;
+parent -w $CameraNames;
+select -r $Camera ;
+select -add CameraOutput $CameraNames;
+doCreateParentConstraintArgList 1 { "0","0","0","0","0","0","0","0","1","","1" };
+expression -s ($CameraNames+".focalLength="+$CameraShape+".focalLength;")  -o CameraOutputShape;
+
+select -r $CameraNames;
+int $TimeMin=`playbackOptions -q -min`;
+int $TimeMax=`playbackOptions -q -max`;
+bakeResults -simulation true -t ($TimeMin+":"+$TimeMax) -hierarchy below -sampleBy 1 -oversamplingRate 1 -disableImplicitControl true -preserveOutsideKeys true -sparseAnimCurveBake false -removeBakedAttributeFromLayer false -removeBakedAnimFromLayer false -bakeOnOverrideLayer false -minimizeRotation true -controlPoints false -shape true {$CameraNames};
+delete ($CameraNames+"_parentConstraint1");

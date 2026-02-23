@@ -1,0 +1,25 @@
+##0、在C盘创建个FBX文件夹   放入fbx.mel//
+##1、导入引用//
+##2、合并动画层//
+##3、选中（可多选）需要导出的根骨骼//
+##4、下方脚本复制进Python脚本编辑器 Ctrl+A全选脚本，Ctrl+小回车执行//
+import pymel.core as pm
+Roots = pm.ls(sl=1)
+TimeMin=int(pm.playbackOptions(q=1, min=1))
+TimeMax=int(pm.playbackOptions(q=1, max=1))
+pm.select(pm.ls(type="blendShape"), add=1)
+pm.bakeResults(sparseAnimCurveBake=False, minimizeRotation=True, removeBakedAttributeFromLayer=False, hierarchy='below', removeBakedAnimFromLayer=False, oversamplingRate=1, bakeOnOverrideLayer=False, preserveOutsideKeys=True, simulation=True, sampleBy=1, shape=True, t=(str(TimeMin) + ":" + str(TimeMax)), disableImplicitControl=True, controlPoints=False)
+pm.parent(Roots, w=1)
+pm.select(pm.ls(type="scaleConstraint"))
+pm.select(pm.ls(type="parentConstraint"), add=1)
+pm.select(pm.ls(type="pointConstraint"), add=1)
+pm.select(pm.ls(type="orientConstraint"), add=1)
+pm.select(pm.ls(type="tangentConstraint"), add=1)
+pm.select(pm.ls(type="aimConstraint"), add=1)
+pm.mel.doDelete()
+for i in range(0,len(Roots)):
+    FbxName = Roots[i].split(':')[0]
+    mel.eval('source "C:/FBX/FBX.mel"')
+    pm.select(Roots[i], r=1)
+    pm.cmds.file('C:/FBX/'+FbxName+'.fbx', pr=1, typ="FBX export", force=1, options="fbx", es=1)
+

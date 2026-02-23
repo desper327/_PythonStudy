@@ -1,0 +1,15 @@
+# 三维影视制作管理系统依赖包
+# Core dependencies
+PySide6>=6.5.0
+requests>=2.31.0
+
+# Optional dependencies for enhanced functionality
+# matplotlib>=3.7.0  # 用于图表生成
+# pandas>=2.0.0      # 用于数据分析
+# openpyxl>=3.1.0    # 用于Excel导入导出
+# Pillow>=10.0.0     # 用于图像处理
+
+# Development dependencies (可选)
+# pytest>=7.4.0      # 用于单元测试
+# black>=23.0.0      # 用于代码格式化
+# flake8>=6.0.0      # 用于代码检查

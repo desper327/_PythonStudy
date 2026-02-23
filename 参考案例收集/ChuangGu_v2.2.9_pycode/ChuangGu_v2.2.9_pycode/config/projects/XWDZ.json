@@ -1,0 +1,41 @@
+{
+    "vendor": {
+        "company": [],
+        "studio": [],
+        "individual": []
+    },
+    "project": {
+        "name": "XWDZ",
+        "resolutions": [
+            1920,
+            1080
+        ],
+        "handleFrame": [
+            -3,
+            3
+        ],
+        "startFrame": 101,
+        "simulationFrame": 50,
+        "drive": "Z:",
+        "playbackSpeed": "25fps",
+        "business": 0
+    },
+    "maya": {
+        "render": [
+            "Arnold",
+            "6.2.0.1"
+        ],
+        "hair": [
+            "Xgen",
+            "Built-in"
+        ],
+        "cloth": [
+            "nCloth",
+            "Built-in"
+        ],
+        "version": [
+            "2018",
+            ".5"
+        ]
+    }
+}

@@ -1,0 +1,11 @@
+# PySide6 UI框架
+PySide6==6.5.0
+
+# WebSocket客户端
+python-socketio[client]==5.9.0
+
+# HTTP请求
+requests==2.31.0
+
+# 其他工具
+python-dotenv==1.0.0
