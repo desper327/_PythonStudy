@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}动态表格 - 表格生成器{% endblock %}
+
+{% block content %}
+<section>
+    <h2>动态表格生成器</h2>
+    <p>使用下面的表单控制表格的行数和列数。</p>
+    
+    <div class="form-container">
+        <form action="/dynamic-table" method="get" class="table-form">
+            <div class="form-group">
+                <label for="rows">行数:</label>
+                <input type="number" id="rows" name="rows" min="1" max="20" value="{{ request.query_params.get('rows', 5) }}">
+            </div>
+            <div class="form-group">
+                <label for="columns">列数:</label>
+                <input type="number" id="columns" name="columns" min="1" max="10" value="{{ request.query_params.get('columns', 3) }}">
+            </div>
+            <button type="submit" class="button">生成表格</button>
+        </form>
+    </div>
+    
+    <div class="table-container">
+        <h3>生成的表格 ({{ table_data.rows|length }} 行 x {{ table_data.headers|length }} 列)</h3>
+        <table>
+            <thead>
+                <tr>
+                    {% for header in table_data.headers %}
+                    <th>{{ header }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in table_data.rows %}
+                <tr>
+                    {% for header in table_data.headers %}
+                    <td>{{ row[header] }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="controls">
+        <a href="/" class="button">返回首页</a>
+    </div>
+</section>
+{% endblock %} 

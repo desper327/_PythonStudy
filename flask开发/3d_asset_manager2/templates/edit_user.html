@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>编辑用户</title>
+</head>
+<body>
+    <h1>编辑用户: {{ user.username }}</h1>
+    <form action="{{ url_for('edit_user', user_id=user.user_id) }}" method="post">
+        <label for="username">用户名:</label>
+        <input type="text" id="username" name="username" value="{{ user.username }}" required>
+        <label for="password">密码:</label>
+        <input type="password" id="password" name="password" required>
+        <label for="group">用户组:</label>
+        <select id="group" name="group">
+            <option value="admin" {{ 'selected' if user.group == 'admin' }}>管理员</option>
+            <option value="user" {{ 'selected' if user.group == 'user' }}>普通用户</option>
+        </select>
+        <button type="submit">保存</button>
+    </form>
+    <a href="{{ url_for('users') }}">返回用户管理页面</a>
+</body>
+</html>

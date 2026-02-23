@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>编辑资产</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+</head>
+<body>
+    <h1>编辑资产</h1>
+    <div class="form-container">
+        <form action="{{ url_for('edit_asset', asset_id=asset.asset_id) }}" method="POST" enctype="multipart/form-data">
+            <label for="asset_name">资产名称:</label>
+            <input type="text" id="asset_name" name="asset_name" value="{{ asset.asset_name }}" required>
+
+            <label for="chinese_name">中文名称:</label>
+            <input type="text" id="chinese_name" name="chinese_name" value="{{ asset.chinese_name }}">
+
+            <label for="asset_type">资产类型:</label>
+            <select id="asset_type" name="asset_type" required>
+                <option value="角色" {% if asset.asset_type == '角色' %}selected{% endif %}>角色</option>
+                <option value="道具" {% if asset.asset_type == '道具' %}selected{% endif %}>道具</option>
+                <option value="场景" {% if asset.asset_type == '场景' %}selected{% endif %}>场景</option>
+            </select>
+
+            <label for="project">项目:</label>
+            <input type="text" id="project" name="project" value="{{ asset.project }}">
+
+            <label for="disk_path">磁盘路径:</label>
+            <input type="text" id="disk_path" name="disk_path" value="{{ asset.disk_path }}">
+
+            <label for="thumbnail">缩略图:</label>
+            <input type="file" id="thumbnail" name="thumbnail">
+            {% if asset.thumbnail %}
+            <p>当前缩略图: <img src="{{ url_for('static', filename=asset.thumbnail) }}" alt="缩略图" width="100"></p>
+            {% endif %}
+
+            <label for="remarks">备注:</label>
+            <textarea id="remarks" name="remarks" rows="4">{{ asset.remarks }}</textarea>
+
+            <button type="submit">保存更改</button>
+        </form>
+        <a href="{{ url_for('assets') }}" class="btn-back">返回资产列表</a>
+    </div>
+</body>
+</html>

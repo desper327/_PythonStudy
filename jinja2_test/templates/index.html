@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}首页 - 表格生成器{% endblock %}
+
+{% block content %}
+<section>
+    <h2>基本表格示例</h2>
+    <p>这是一个使用Jinja2模板生成的简单表格示例。</p>
+    
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    {% for header in table_data.headers %}
+                    <th>{{ header }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in table_data.rows %}
+                <tr>
+                    <td>{{ row.id }}</td>
+                    <td>{{ row.name }}</td>
+                    <td>{{ row.age }}</td>
+                    <td>{{ row.occupation }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="controls">
+        <a href="/dynamic-table" class="button">生成动态表格</a>
+    </div>
+</section>
+{% endblock %} 

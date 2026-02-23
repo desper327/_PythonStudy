@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D 资产管理</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.10.5/viewer.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 当前登录用户信息 -->
+        <div class="user-info">
+            当前登录用户: {{ session.get('username') }}
+        </div>
+
+        <!-- 管理用户按钮 -->
+        {% if session['group'] in ['superadmin', 'admin'] %}
+        <a href="{{ url_for('users') }}" class="admin-button">管理用户</a>
+        {% endif %}
+
+
+
+        <h1>3D 资产管理</h1>
+
+
+
+        <!-- 项目下拉选单和资产类型选择 -->
+        <div class="filter-container">
+            <div class="left-filters">
+                <select id="projectFilter" onchange="filterByProject()">
+                    <option value="">选择项目</option>
+                    {% for project in projects %}
+                    <option value="{{ project }}" {% if project == selected_project %}selected{% endif %}>{{ project }}</option>
+                    {% endfor %}
+                </select>
+                <select id="assetTypeFilter" onchange="filterByAssetType()">
+                    <option value="">选择资产类型</option>
+                    <option value="角色" {% if selected_asset_type == '角色' %}selected{% endif %}>角色</option>
+                    <option value="道具" {% if selected_asset_type == '道具' %}selected{% endif %}>道具</option>
+                    <option value="场景" {% if selected_asset_type == '场景' %}selected{% endif %}>场景</option>
+                </select>
+            </div>
+            <div class="right-filters">
+                <select id="searchType">
+                    <option value="asset_name" {% if search_type == 'asset_name' %}selected{% endif %}>按资产名称搜索</option>
+                    <option value="chinese_name" {% if search_type == 'chinese_name' %}selected{% endif %}>按中文名称搜索</option>
+                </select>
+                <input type="text" id="searchInput" placeholder="输入搜索内容" value="{{ search_value }}">
+                <button onclick="filterAssets()">搜索</button>
+
+                <!-- 添加资产按钮 -->
+                {% if session['group'] in ['superadmin', 'admin'] %}
+                <a href="{{ url_for('add_asset') }}" class="add_btn">添加资产</a>
+                {% endif %}
+
+            </div>
+        </div>
+
+        <script>
+            // 根据项目过滤资产
+            function filterByProject() {
+                const project = document.getElementById('projectFilter').value;
+                const assetType = document.getElementById('assetTypeFilter').value;
+                const searchType = document.getElementById('searchType').value;
+                const searchValue = document.getElementById('searchInput').value;
+    
+                const url = new URL(window.location.href);
+                url.searchParams.set('project', project);
+                url.searchParams.set('asset_type', assetType);
+                url.searchParams.set('search_type', searchType);
+                url.searchParams.set('search_value', searchValue);
+    
+                window.location.href = url.toString();
+            }
+    
+            // 根据资产类型过滤资产
+            function filterByAssetType() {
+                const project = document.getElementById('projectFilter').value;
+                const assetType = document.getElementById('assetTypeFilter').value;
+                const searchType = document.getElementById('searchType').value;
+                const searchValue = document.getElementById('searchInput').value;
+    
+                const url = new URL(window.location.href);
+                url.searchParams.set('project', project);
+                url.searchParams.set('asset_type', assetType);
+                url.searchParams.set('search_type', searchType);
+                url.searchParams.set('search_value', searchValue);
+    
+                window.location.href = url.toString();
+            }
+    
+            // 根据搜索条件过滤资产
+            function filterAssets() {
+                const project = document.getElementById('projectFilter').value;
+                const assetType = document.getElementById('assetTypeFilter').value;
+                const searchType = document.getElementById('searchType').value;
+                const searchValue = document.getElementById('searchInput').value;
+    
+                const url = new URL(window.location.href);
+                url.searchParams.set('project', project);
+                url.searchParams.set('asset_type', assetType);
+                url.searchParams.set('search_type', searchType);
+                url.searchParams.set('search_value', searchValue);
+    
+                window.location.href = url.toString();
+            }
+        </script>
+
+
+    <div class="table-container">
+        <!-- 资产表格 -->
+        <table>
+            <thead>
+                <tr>
+                    <th>缩略图</th>
+                    <th>资产名称</th>
+                    <th>中文名称</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for asset in assets %}
+                <tr data-asset-id="{{ asset.asset_id }}" onclick="selectAsset(this)">
+                    <td>
+                        {% if asset.thumbnail %}
+                        <img src="{{ url_for('static', filename=asset.thumbnail) }}" alt="缩略图" class="thumbnail">
+                        {% else %}
+                        .
+                        {% endif %}
+                    </td>
+                    <td>{{ asset.asset_name }}</td>
+                    <td>{{ asset.chinese_name }}</td>
+                    <td class="actions">
+                        <a href="{{ url_for('edit_asset', asset_id=asset.asset_id) }}" class="btn">编辑</a>
+                        <a href="{{ url_for('delete_asset', asset_id=asset.asset_id) }}" class="btn btn-danger" onclick="return confirm('确定要删除此资产吗？')">删除</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 底部固定区域 -->
+    <div class="bottom-panel">
+        <div class="box">
+            <h3>设定图</h3>
+            <div class="buttons">
+                <button onclick="openPath('design')">打开</button>
+                <button onclick="copyPath('design')">复制</button>
+            </div>
+            <div id="design-path"></div>
+        </div>
+        <div class="box">
+            <h3>模型</h3>
+            <div class="buttons">
+                <button onclick="openPath('model')">打开</button>
+                <button onclick="copyPath('model')">复制</button>
+            </div>
+            <div id="model-path"></div>
+        </div>
+        <div class="box">
+            <h3>贴图</h3>
+            <div class="buttons">
+                <button onclick="openPath('texture')">打开</button>
+                <button onclick="copyPath('texture')">复制</button>
+            </div>
+            <div id="texture-path"></div>
+        </div>
+        <div class="box">
+            <h3>绑定</h3>
+            <div class="buttons">
+                <button onclick="openPath('rig')">打开</button>
+                <button onclick="copyPath('rig')">复制</button>
+            </div>
+            <div id="rig-path"></div>
+        </div>
+        <div class="box">
+            <h3>动作库</h3>
+            <div class="buttons">
+                <button onclick="openPath('actionlib')">打开</button>
+                <button onclick="copyPath('actionlib')">复制</button>
+            </div>
+            <div id="actionlib-path"></div>
+        </div>
+        <div class="box">
+            <h3>备注</h3>
+            <div id="备注-content" class="scrollable"></div>
+        </div>
+        <div class="box">
+            <h3>其他信息</h3>
+            <div id="其他信息-content"></div>
+        </div>
+    </div>
+</div>
+    <script>
+        // 当前选中的资产
+        let selectedAsset = null;
+
+        // 选中资产时触发
+        function selectAsset(row) {
+            // 移除之前选中的样式
+            const rows = document.querySelectorAll('tbody tr');
+            rows.forEach(r => r.classList.remove('selected'));
+
+            // 添加选中样式
+            row.classList.add('selected');
+
+            // 获取资产数据
+            const assetId = row.getAttribute('data-asset-id');
+            fetch(`/get_asset_details/${assetId}`)
+                .then(response => response.json())
+                .then(data => {
+                    selectedAsset = data;
+                    updateBottomPanel();
+                });
+        }
+
+        // 更新底部面板内容
+        function updateBottomPanel() {
+            if (!selectedAsset) return;
+
+            // 更新路径
+            document.getElementById('design-path').textContent = selectedAsset.design_path;
+            document.getElementById('model-path').textContent = selectedAsset.model_path;
+            document.getElementById('texture-path').textContent = selectedAsset.texture_path;
+            document.getElementById('rig-path').textContent = selectedAsset.rig_path;
+            document.getElementById('actionlib-path').textContent = selectedAsset.actionlib_path;  // 新增动作库路径
+
+            // 更新备注
+            document.getElementById('备注-content').textContent = selectedAsset.remarks;
+
+            // 更新其他信息
+            document.getElementById('其他信息-content').innerHTML = `
+                <p>创建者: ${selectedAsset.creator}</p>
+                <p>创建时间: ${selectedAsset.created_at}</p>
+                <p>最后修改时间: ${selectedAsset.updated_at}</p>
+                <p>最后修改人: ${selectedAsset.updated_by}</p>
+            `;
+        }
+
+        // 打开路径
+        function openPath(type) {
+            const path = selectedAsset[`${type}_path`];
+            if (path) {
+                alert(`打开路径: ${path}`);
+                // 这里可以调用系统命令打开路径
+            }
+        }
+
+        // 复制路径
+        function copyPath(type) {
+            const path = selectedAsset[`${type}_path`];
+            if (path) {
+                navigator.clipboard.writeText(path).then(() => {
+                    alert(`已复制路径: ${path}`);
+                });
+            }
+        }
+    </script>
+
+
+
+    
+
+
+    <!-- 弹出窗口 -->
+    <div id="image-modal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="modal-image">
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.10.5/viewer.min.js"></script>
+    <script>
+        // 获取弹出窗口和图片元素
+        const modal = document.getElementById('image-modal');
+        const modalImg = document.getElementById('modal-image');
+        const closeBtn = document.querySelector('.close');
+
+        // 点击缩略图时显示弹出窗口
+        document.querySelectorAll('.thumbnail').forEach(thumbnail => {
+            thumbnail.addEventListener('click', function () {
+                modal.style.display = 'block';
+                modalImg.src = this.src; // 设置弹出窗口中的图片
+
+                // 初始化 Viewer.js
+                const viewer = new Viewer(modalImg, {
+                    inline: false,
+                    navbar: false,
+                    toolbar: {
+                        zoomIn: true,
+                        zoomOut: true,
+                        rotateLeft: true,
+                        rotateRight: true,
+                        reset: true,
+                    },
+                });
+
+                // 直接进入交互模式
+                viewer.show();
+            });
+        });
+
+        // 点击关闭按钮时隐藏弹出窗口
+        closeBtn.addEventListener('click', function () {
+            modal.style.display = 'none';
+        });
+
+        // 点击弹出窗口外部时隐藏弹出窗口
+        window.addEventListener('click', function (event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+    </script>
+</body>
+</html>

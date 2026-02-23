@@ -1,0 +1,28 @@
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Path</th>
+            <th>Thumbnail</th>
+            <th>Description</th>
+            <th>Updated At</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for record in history %}
+        <tr>
+            <td>{{ record[2] }}</td>
+            <td>{{ record[3] }}</td>
+            <td>
+                {% if record[4] %}
+                <img src="{{ url_for('static', filename=record[4]) }}" alt="Thumbnail" width="50">
+                {% else %}
+                No Thumbnail
+                {% endif %}
+            </td>
+            <td>{{ record[5] }}</td>
+            <td>{{ record[6] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
