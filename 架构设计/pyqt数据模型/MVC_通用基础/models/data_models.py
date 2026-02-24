@@ -13,14 +13,6 @@ class SignalData(BaseModel):
     params: Dict[str, Any]
 
 
-@dataclass
-class TaskSpec:
-    func: Callable[..., Any]
-    args: Tuple[Any, ...] = ()
-    kwargs: Dict[str, Any] = field(default_factory=dict)
-    return_result: bool = False
-
-
 class TextData(BaseModel):
     """任务数据模型"""
     text: str = 'default'
@@ -32,3 +24,21 @@ class TextData(BaseModel):
             raise ValueError('文本不能为空')
         return v.strip()
     
+
+@dataclass
+class TreadSpec:
+    func: Callable[..., Any]
+    args: Tuple[Any, ...] = ()
+    kwargs: Dict[str, Any] = field(default_factory=dict)
+    return_result: bool = False
+
+
+@dataclass
+class ProcessSpec:
+    program: str
+    arguments: List[str] = field(default_factory=list)
+    working_directory: Optional[str] = None
+    environment: Dict[str, str] = field(default_factory=dict)
+    merge_channels: bool = False  # True: 合并 stdout+stderr 到 stdout
+    text_encoding: str = "utf-8"
+    start_detached: bool = False

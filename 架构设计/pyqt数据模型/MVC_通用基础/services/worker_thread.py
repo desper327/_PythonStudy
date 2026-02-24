@@ -5,7 +5,7 @@
 import inspect
 from typing import Any, List
 from Qt.QtCore import QThread, Signal
-from models.data_models import SignalData, TaskSpec
+from models.data_models import SignalData, TreadSpec
 
 class WorkerThread(QThread):
     """
@@ -14,9 +14,9 @@ class WorkerThread(QThread):
     """
     
     # 线程信号
-    tread_signal = Signal(SignalData)  
+    thread_signal = Signal(SignalData)  
     
-    def __init__(self, tasks: List[TaskSpec]):
+    def __init__(self, tasks: List[TreadSpec]):
         """
         初始化工作线程
         
@@ -29,16 +29,16 @@ class WorkerThread(QThread):
 
     def _emit_progress(self, percent: int):
         if self._is_running:
-            self.tread_signal.emit(SignalData(signal_type='on_progress_thread', params={"progress": int(percent)}))
+            self.thread_signal.emit(SignalData(signal_type='on_progress_thread', params={"progress": int(percent)}))
 
     def _emit_log(self, message: str):
         if self._is_running:
-            self.tread_signal.emit(SignalData(signal_type='on_log_thread', params={"message": str(message)}))
+            self.thread_signal.emit(SignalData(signal_type='on_log_thread', params={"message": str(message)}))
 
     def _is_cancelled(self) -> bool:
         return self.isInterruptionRequested() or (not self._is_running)
 
-    def _call_task(self, task: TaskSpec):
+    def _call_task(self, task: TreadSpec):
         sig = inspect.signature(task.func)
         kwargs = dict(task.kwargs)
 
@@ -59,17 +59,17 @@ class WorkerThread(QThread):
             self._is_running = True
             
             # 发射开始信号
-            self.tread_signal.emit(SignalData(signal_type='on_start_thread', params={}))
+            self.thread_signal.emit(SignalData(signal_type='on_start_thread', params={}))
             
             if not self.tasks:
-                self.tread_signal.emit(SignalData(signal_type='on_finish_thread', params={"result": None}))
+                self.thread_signal.emit(SignalData(signal_type='on_finish_thread', params={"result": None}))
                 return
 
             result: Any = None
 
             for i, task in enumerate(self.tasks):
                 if self._is_cancelled():
-                    self.tread_signal.emit(SignalData(signal_type='on_cancel_thread', params={}))
+                    self.thread_signal.emit(SignalData(signal_type='on_cancel_thread', params={}))
                     return
 
                 current = self._call_task(task)
@@ -79,12 +79,12 @@ class WorkerThread(QThread):
                 percent = 100 * (i + 1) // len(self.tasks)
                 self._emit_progress(percent)
 
-            self.tread_signal.emit(SignalData(signal_type='on_finish_thread', params={"result": result}))
+            self.thread_signal.emit(SignalData(signal_type='on_finish_thread', params={"result": result}))
 
         except Exception as e:
             # 发射错误信号
             if self._is_running:
-                self.tread_signal.emit(SignalData(signal_type='on_error_thread', params={"error": str(e)}))
+                self.thread_signal.emit(SignalData(signal_type='on_error_thread', params={"error": str(e)}))
         finally:
             self._is_running = False
     
