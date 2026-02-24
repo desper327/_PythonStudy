@@ -4,10 +4,11 @@
 """
 import time
 from Qt.QtCore import QObject
-from models.data_models import TextData, SignalData, TaskSpec
+from models.data_models import TextData, SignalData, TreadSpec, ProcessSpec
 from models.data_center import DataCenter
 from views.main_view import MainView
 from services.worker_thread import WorkerThread
+from services.worker_process import ProcessWorker
 
 class MainController(QObject):
     """主控制器 - 使用自定义信号槽架构"""
@@ -18,10 +19,12 @@ class MainController(QObject):
         self.view_signal_dict={
             "on_show_text":self.handle_show_text,
             "on_start_thread":self.handle_start_thread,
+            "on_start_process":self.handle_start_process,
         }
         self.model_signal_dict={
         "text_changed":self.on_text_changed_update_ui,
         "thread_data_changed": self.on_thread_data_changed_update_ui,
+        "process_data_changed": self.on_process_data_changed_update_ui,
     }
 
         self.thread_signal_dict={
@@ -31,6 +34,19 @@ class MainController(QObject):
             "on_error_thread": self.handle_thread_error,
             "on_log_thread": self.handle_thread_log,
             "on_cancel_thread": self.handle_thread_cancel,
+        }
+
+        self.process_signal_dict = {
+            "on_process_starting": self.on_process_starting,
+            "on_process_started": self.on_process_started,
+            "on_process_stdout": self.on_process_stdout,
+            "on_process_stderr": self.on_process_stderr,
+            "on_process_finished": self.on_process_finished,
+            "on_process_error": self.on_process_error,
+            "on_process_state_changed": self.on_process_state_changed,
+            "on_process_terminating": self.on_process_terminating,
+            "on_process_killing": self.on_process_killing,
+            "on_process_detached_started": self.on_process_detached_started,
         }
 
         self.worker_thread: WorkerThread | None = None
@@ -85,6 +101,8 @@ class MainController(QObject):
         print(f"[Controller] handle_show_text: {text_data.text}")
         self.data_center.text = text_data
 
+
+#======== 处理线程请求的方法 ========
     def handle_start_thread(self):
         """
         槽函数：处理开始子线程按钮点击事件
@@ -95,29 +113,24 @@ class MainController(QObject):
             return
 
         def fun1():
+            print("任务1开始")
             time.sleep(2)
-            print("[Controller] 任务1")
+            print("任务1结束")
 
-        def fun2(progress=None, log=None, is_cancelled=None):
-            if log:
-                log("任务2开始")
+        def fun2():
+            print("任务2开始")
             for i in range(1, 6):
-                if is_cancelled and is_cancelled():
-                    return None
                 time.sleep(0.4)
-                if progress:
-                    progress(i * 20)
-            if log:
-                log("任务2结束")
-            return "任务2结果"
+            print("任务2结束")
+            return "任务2的返回结果"
 
         tasks = [
-            TaskSpec(func=fun1),
-            TaskSpec(func=fun2, return_result=True),
+            TreadSpec(func=fun1),
+            TreadSpec(func=fun2, return_result=True),
         ]
 
         self.worker_thread = WorkerThread(tasks)
-        self.worker_thread.tread_signal.connect(self.handle_thread_signal)
+        self.worker_thread.thread_signal.connect(self.handle_thread_signal)
         self.worker_thread.finished.connect(self._on_worker_thread_finished)
         self.worker_thread.start()
 
@@ -147,6 +160,8 @@ class MainController(QObject):
     def handle_thread_error(self, error: str): 
         """错误信息显示在thread_label"""
         print("handle_thread_error",error)
+        self.cleanup()
+        self.show_error(error)
         self.data_center.thread_data = TextData(text=f"错误: {error}")
 
     def handle_thread_log(self, message: str):
@@ -156,9 +171,56 @@ class MainController(QObject):
         self.data_center.thread_data = TextData(text="已取消")
 
 
+#======== 处理进程请求的方法 ========
+    def handle_start_process(self):
+        """
+        槽函数：处理开始进程按钮点击事件
+        """
+        print("[Controller] handle_start_process")
+        self.process_worker = ProcessWorker()
+        self.process_worker.process_signal.connect(self.handle_process_signal)
+        self.process_worker.start(ProcessSpec(program="python", arguments=["-c", "print('hello world')"]))
+
+    def handle_process_signal(self, signal_data: SignalData):
+        print("[Controller] 收到进程信号")
+        if signal_data.signal_type in self.process_signal_dict:
+            self.process_signal_dict[signal_data.signal_type](**signal_data.params)
+
+    def on_process_starting(self):
+        print("[Controller] on_process_starting")
+
+    def on_process_started(self):
+        print("[Controller] on_process_started")
+    
+    def on_process_stdout(self):
+        print("[Controller] on_process_stdout")
+    
+    def on_process_stderr(self):
+        print("[Controller] on_process_stderr")
+    
+    def on_process_finished(self):
+        print("[Controller] on_process_finished")
+
+    def on_process_state_changed(self):
+        print("[Controller] on_process_state_changed")
+
+    def on_process_terminating(self):
+        print("[Controller] on_process_terminating")
+    
+    def on_process_killing(self):
+        print("[Controller] on_process_killing")
+    
+    def on_process_detached_started(self):
+        print("[Controller] on_process_detached_started")
+    
+    def on_process_error(self):
+        print("[Controller] on_process_error")
+
+
+#======== 处理数据中心数据变更的方法 ========
     def on_text_changed_update_ui(self, new_text: TextData):
         """
-        槽函数：当仓库中的文本发生变化时，更新UI
+        槽函数：当数据中心的文本发生变化时，更新UI
         
         Args:
             new_text: 新的文本数据
@@ -171,6 +233,11 @@ class MainController(QObject):
         print("[Controller] on_thread_data_changed_update_ui")
         self.view.thread_label.setText(new_thread_data.text)
     
+    def on_process_data_changed_update_ui(self, new_process_data: TextData):
+        """进程数据变化时更新UI"""
+        print("[Controller] on_process_data_changed_update_ui")
+        self.view.process_label.setText(new_process_data.text)
+
     def show(self):
         """显示主窗口"""
         self.view.show()

@@ -7,48 +7,25 @@ from Qt.QtWidgets import (
     QListWidget, QPushButton, QLineEdit, QTextEdit,
     QLabel, QComboBox, QMessageBox, QSplitter, QListWidgetItem
 )
-from Qt.QtCore import Qt, Signal
+# from Qt.QtCore import Qt, Signal
+from views.ui_main_view import Ui_MainWindow
 from models.data_models import SignalData, TextData
+from Qt.QtCore import Signal
 
-class MainView(QMainWindow):
+class MainView(Ui_MainWindow, QMainWindow):
     """主窗口视图 - 使用手动UI更新方式"""
     view_signal = Signal(SignalData)  # 视图信号
     
     def __init__(self):
         super().__init__()
-        self.setup_ui()
+        self.setupUi(self)
+        self.connect_signals()
     
-    def setup_ui(self):
-        """设置用户界面"""
-        self.setWindowTitle("MVC通用基础")
-        self.setGeometry(100, 100, 400, 400)
-        
-        # 创建中央widget
-        central_widget = QWidget()
-        self.setCentralWidget(central_widget)
-        
-        # 创建主布局
-        main_layout = QVBoxLayout(central_widget)
-        
-        # 创建基础
-        self.line_edit=QLineEdit()
-        self.line_edit.setPlaceholderText("输入一个名称")
-        main_layout.addWidget(self.line_edit)
-        
-        self.button = QPushButton("显示")
+    def connect_signals(self):
         self.button.clicked.connect(self.on_show_text)
-        main_layout.addWidget(self.button)
-        
-        self.show_label = QLabel("未定义")  
-        main_layout.addWidget(self.show_label)
-
-        self.button_thread = QPushButton("开始子线程")
         self.button_thread.clicked.connect(self.on_start_thread)
-        main_layout.addWidget(self.button_thread)
-        
-        self.thread_label = QLabel("未定义")  
-        main_layout.addWidget(self.thread_label)
-
+        self.button_process.clicked.connect(self.on_start_process)
+    
     # ======= 手动UI操作方法 - 供控制器调用 ==========
     def on_show_text(self):
         text_data=TextData(text=self.line_edit.text())
@@ -56,7 +33,10 @@ class MainView(QMainWindow):
         
     def on_start_thread(self):
         self.view_signal.emit(SignalData(signal_type='on_start_thread', params={}))
-        
+    
+    def on_start_process(self):
+        self.view_signal.emit(SignalData(signal_type='on_start_process', params={}))
+    
     def show_error(self, error: str):
         """显示错误信息"""
         QMessageBox.critical(self, "错误", error)
