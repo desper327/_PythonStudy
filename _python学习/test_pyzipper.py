@@ -152,8 +152,7 @@ def nested_extract_with_passwords(
 if __name__ == "__main__":
     # 示例
     source = r"D:\ttt\max_packages"  # 文件或目录都可以
-    pwds = ["Ddfaeagdf1434%", "KJfdfefad45948*", "OUYdfdfenas45492374##", "sjfidfienUSFHS%$$", "knjfgeuhasdf*#@UUSHfd", "JHK&#348759023jdfen", 
-            "INUHU*&dfenu234", "dsafaenUYB&*dfe32", "32434NNK&ewe", "dfneiuhua#IIOdf323", "PINUD*#fdfen2321", "dfenm**UYEdfe34565"]
+    pwds = ["","",""]
     out_zip_dir = r"D:\demo_zip_out"
     out_extract_dir = r"D:\demo_zip_extract"
 
