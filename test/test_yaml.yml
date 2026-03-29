@@ -1,0 +1,14 @@
+settings.asset_step:      
+  collector_settings:
+    Work Template: max_asset_work    #键值对，键可以有空格
+    66: 0.123
+task_mapping:
+  角色制作:                  #值是一个数组
+    - asset_type: ["aa"]     #  数组的项是个字典
+      export_setting1: 11
+      export_setting2: 22
+    - asset_type2: ["aa"]
+      export_setting3: 33
+      export_setting4: 44
+66: 0.123
+True: False
