@@ -186,35 +186,35 @@ class MainController(QObject):
         if signal_data.signal_type in self.process_signal_dict:
             self.process_signal_dict[signal_data.signal_type](**signal_data.params)
 
-    def on_process_starting(self):
-        print("[Controller] on_process_starting")
+    def on_process_starting(self,**kwargs):
+        print(f"[Controller] on_process_starting,{kwargs}")
 
-    def on_process_started(self):
-        print("[Controller] on_process_started")
+    def on_process_started(self,**kwargs):
+        print(f"[Controller] on_process_started,{kwargs}")
     
-    def on_process_stdout(self):
-        print("[Controller] on_process_stdout")
+    def on_process_stdout(self,**kwargs):
+        print(f"[Controller] on_process_stdout,{kwargs}")
     
-    def on_process_stderr(self):
-        print("[Controller] on_process_stderr")
+    def on_process_stderr(self,**kwargs):
+        print(f"[Controller] on_process_stderr,{kwargs}")
     
-    def on_process_finished(self):
-        print("[Controller] on_process_finished")
+    def on_process_finished(self,**kwargs):
+        print(f"[Controller] on_process_finished,{kwargs}")
 
-    def on_process_state_changed(self):
-        print("[Controller] on_process_state_changed")
+    def on_process_state_changed(self,**kwargs):
+        print(f"[Controller] on_process_state_changed,{kwargs}")
 
-    def on_process_terminating(self):
-        print("[Controller] on_process_terminating")
+    def on_process_terminating(self,**kwargs):
+        print(f"[Controller] on_process_terminating,{kwargs}")
     
-    def on_process_killing(self):
-        print("[Controller] on_process_killing")
+    def on_process_killing(self,**kwargs):
+        print(f"[Controller] on_process_killing,{kwargs}")
     
-    def on_process_detached_started(self):
-        print("[Controller] on_process_detached_started")
+    def on_process_detached_started(self,**kwargs):
+        print(f"[Controller] on_process_detached_started,{kwargs}")
     
-    def on_process_error(self):
-        print("[Controller] on_process_error")
+    def on_process_error(self,**kwargs):
+        print(f"[Controller] on_process_error,{kwargs}")
 
 
 #======== 处理数据中心数据变更的方法 ========
